@@ -81,6 +81,9 @@
 \usepackage{mathrsfs}
 \usepackage{mathtools}
 
+\usepackage{hyperref}
+\usepackage{adjustbox}
+
 
 %% MATH MACROS
 \newcommand{\bbF}{\mathbb{F}}
@@ -98,6 +101,7 @@
 \newcommand{\eval}[1]{ \left. #1 \right| }
 \newcommand{\Expect}{\mathbb{E}}
 \newcommand{\Var}{\text{Var}}
+% \newcommand{\Var}{\mathbb{V}}
 \newcommand{\Cov}{\text{Cov}}
 \newcommand{\Cor}{\text{Cor}}
 \newcommand{\Pois}{\text{Poisson}}
@@ -106,11 +110,20 @@
 \newcommand{\Beta}{\text{Beta}}
 \newcommand{\Ind}{\mathbf{1}}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\wt}{W}
+\newcommand{\var}{\text{var}}
+\newcommand{\varE}{E}
+\newcommand{\varT}{T}
+\newcommand{\varEscape}{\eta}
+\newcommand{\varTransmission}{\rho}
+\newcommand{\vac}{\text{vac}}
+\newcommand{\evofr}{\texttt{evofr}}
+\newcommand{\forecastsNcov}{\texttt{forecasts-ncov}}
 
 \renewcommand{\phi}{\varphi}
 \renewcommand{\emptyset}{\O}
 \renewcommand{\vec}[1] {\boldsymbol{\mathbf{#1}}}
-
+% \includeonly{chapters/introduction}
 \begin{document}
  
 % ==========   Preliminary pages
@@ -123,7 +136,9 @@
 %
 % ----- copyright and title pages
 %
-\Title{Bayesian Epidemic-Evolutionary Models for Evolutionary Forecasting}
+% \Title{Epidemic-Evolutionary Methods for Evolutionary Forecasting of SARS-CoV-2}
+% \Title{Towards Mechanism-informed Evolutionary Forecasting of SARS-CoV-2}
+\Title{From Mechanism to Practice: Evolutionary Forecasting for SARS-CoV-2}
 \Author{Marlin Figgins}
 \Year{2024}
 \Program{Applied Mathematics}
@@ -146,29 +161,23 @@
 \setcounter{page}{-1}
 \abstract{%
 
-Novel genetic variants are often produced due to mutations in currently circulating virus populations. 
-These mutations can sometimes provide fitness advantages to members of the population allowing them to out-compete other variants through several mechanisms such as partial immune escape, increased transmissibility, among others.
+Novel genetic variants are often produced due to mutations in circulating viral populations. 
+These mutations can sometimes provide fitness advantages to members of the population allowing them to out-compete other variants through several mechanisms such as partial immune escape and increased transmissibility.
 This interplay of mutation, transmission, and selection leads to evolution in the population.
 Therefore, understanding the genetic composition of viral populations and its relation to virus phenotype can be useful for understanding the current and future epidemic potential of viral variants.
 
-%TODO: Segement on SARS-CoV-2 
+This dissertation develops several theoretical ideas, statistical methods, and software tools that enable evolutionary forecasting for SARS-CoV-2 and other rapidly evolving pathogens using concepts from population genetics, mathematical epidemiology, and statistics.
 
-This dissertation develops some of the ideas underlying epidemic-evolutionary dynamics.
+We begin by developing a Bayesian method for estimating the effective reproduction number of genetic variants using counts of variant sequences and measures of incidence such as case counts.
 
-PROJECT 1: by developing a Bayesian method for estimating the effective reproduction number of genetic variants using counts of variant sequences and measures of incidence such as case counts.
-%TODO: So what?
+To evaluate this method among others, we develop a workflow to compare frequency-based forecast models in a live forecasting environment, quantifying the short-term accuracy of such methods and suggesting a minimal sequencing capacity to ensure high quality forecasts.
 
-%TODO: Need to develop pop gen ideas better before this cuz this is first mention of frequency dynamics
+Next, we develop a larger theory for how mechanistic models of transmission constrain how variant frequencies change over time.
+This leads to theoretical results for the trade-off between immune escape and increased transmissibility and suggests new methods for modeling variant fitness using approximate Gaussian processes as well as latent pseudo-immune factors.
 
-PROJECT 2: We develop a larger theory for how mechanistic models of transmission constrain frequency dynamics.
-This leads to theoretical results for the trade-off between immune escape and increased transmissibility 
-also suggests a new non-parameteric estimator of variant fitness using approximate Gaussian processes 
-%TODO: So what?
+We, then, apply these ideas to incorporate molecular data on immune escape and phylogenetic structure into relative fitness estimates to enable out-of-sample prediction of relative fitness from sequence-level predictors.
 
-PROJECT 3: We, then, develop a workflow and framework to allow comparison between existing methods in a live forecasting environment, demonstrating the short-term accuracy of such methods and suggesting a minimal sequencing capacity to ensure high quality forecasts.
-%TODO: So what?
-
-PROJECT 4: Lastly, we apply these ideas to incorporate molecular level data on immune escape into relative fitness forecasts to enable out of sample prediction of variant relative fitness from sequence alone.
+Our focus then shifts to the operational problem of evolutionary forecasting where we develop open-source software and visualization tools that can be used to implement, automate, and interpret evolutionary forecasts.
 
 }
  
@@ -177,7 +186,7 @@ PROJECT 4: Lastly, we apply these ideas to incorporate molecular level data on i
 %
 \tableofcontents
 \listoffigures
-%\listoftables  % I have no tables
+\listoftables
  
 %
 % ----- glossary 
@@ -263,24 +272,25 @@ PROJECT 4: Lastly, we apply these ideas to incorporate molecular level data on i
  
 % ========== Chapter 1
 
-\include{chapters/introduction}
+\include{chapters/introduction/introduction}
 
 % ========== Chapter 2
-\include{chapters/rt-from-frequency-dynamics}
+\include{chapters/rt-from-frequency-dynamics/rt-from-frequency-dynamics}
 
- 
 % ========== Chapter 3
-\include{chapters/relative-fitness-mechanisms}
- 
- 
-% ========== Chapter 4
-\include{chapters/ncov-forecasting-fit}
+\include{chapters/ncov-forecasting-fit/ncov-forecasting-fit}
+
+% ========== Chapter 3
+\include{chapters/relative-fitness-mechanisms/relative-fitness-mechanisms}
 
 % ========== Chapter 5
-\include{chapters/ncov-escape}
+\include{chapters/ncov-escape/ncov-escape}
 
 % ========== Chapter 6
-\include{chapters/discussion-conclusion}
+\include{chapters/operationalizing-forecasts/operationalizing-forecasts}
+
+% ========== Chapter 7
+\include{chapters/discussion-conclusion/discussion-conclusion}
 
 \printendnotes
 
@@ -289,15 +299,17 @@ PROJECT 4: Lastly, we apply these ideas to incorporate molecular level data on i
 %
 % \nocite{*}   % include everything in the uwthesis.bib file
 \bibliographystyle{plain}
-\bibliography{uwthesis}
+\bibliography{dissertation_Figgins}
 %
 % ==========   Appendices
 %
 \appendix
 \raggedbottom\sloppy
- 
-% ========== Appendix A
- 
-% \chapter{Where to find the files}
 
+\include{chapters/rt-from-frequency-dynamics/appendix}
+\include{chapters/ncov-forecasting-fit/appendix}
+\include{chapters/relative-fitness-mechanisms/appendix}
+\include{chapters/ncov-escape/appendix}
+
+%\chapter{Where to find the files}
 \end{document}

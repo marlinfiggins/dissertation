@@ -1,0 +1,419 @@
+\graphicspath{{./chapters/relative-fitness-mechanisms/}}
+
+\chapter{Frequency dynamics predict viral fitness, antigenic relationships and epidemic growth}
+
+
+\section{Abstract}
+\noindent During the COVID-19 pandemic, SARS-CoV-2 variants drove large waves of infections, fueled by increased transmissibility and immune escape.
+Current models focus on changes in variant frequencies without linking them to underlying transmission mechanisms of intrinsic transmissibility and immune escape.
+We introduce a framework connecting variant dynamics to these mechanisms, showing how host population immunity interacts with viral transmissibility and immune escape to determine relative variant fitness.
+% We use a Gaussian process method to estimate changes in relative fitness, enabling flexible monitoring of variant dynamics.
+We advance a selective pressure metric that provides an early signal of epidemic growth using genetic data alone, crucial with current underreporting of cases.
+Additionally, we show that a latent immunity space model approximates immunological distances, offering insights into population susceptibility and immune evasion.
+% By introducing this mechanistic framework and novel metrics, we advance understanding of viral evolution and transmission dynamics.
+These insights refine real-time forecasting and lay the groundwork for research into the interplay between viral genetics, immunity, and epidemic growth.
+
+\section{Main text}
+
+%%% Introduction
+The COVID-19 pandemic was marked by the successive emergence of SARS-CoV-2 variant viruses, driving repeated epidemics globally \cite{tegally2021detection, Volz2021}.
+While these repeated large waves occurred with the emergence of novel variants, the mechanism driving these variants' success changed over time.
+The spread of early variants such as Alpha, Beta, Gamma and Delta were largely driven by increases in intrinsic transmissibility \cite{carabelli2023sars}.
+The Omicron variant showed substantial immune escape \cite{carabelli2023sars} and subsequent derived lineages within Omicron including XBB, EG.5.1 and JN.1 appear to be driven by immune escape as evidenced through molecular studies of neutralization using human sera \cite{Cao2021, Cao2022, Bekliz2024, Jian2023}.
+Since 2022, there has been repeated replacement by subsequent Omicron-derived lineages.
+This rapid viral population turnover is consistent with antigenic evolution and is observed in other viruses such as seasonal influenza \cite{bedford2014integrating}, although SARS-CoV-2 currently remains an outlier in terms of pace of its evolution \cite{kistler2023atlas}.
+This transition from transmissibility-driven to immune escape-driven success is a consequence of the interplay between population immunity and variant fitness.
+
+% Given the rapid emergence and spread of SARS-CoV-2 variants, it is important to assess the rate of turnover as this is an indicator of variant advantage and in addition to understanding how quickly a particular variant is spreading, it may signal the mechanism by which it spreads.
+
+With the increased temporal and geographical scale of sequencing alongside a detailed genetic nomenclature \cite{rambaut2020dynamic} and bioinformatic tools for lineage assignment \cite{turakhia2021ultrafast, aksamentov2021nextclade}, we have gained more data for SARS-CoV-2 than for other circulating viruses giving a unique opportunity for insight into its evolution.
+Several models of variant frequency have been developed to estimate the fitness of emerging SARS-CoV-2 variants \cite{Annavajhala2021, Piantham2022, figgins2022sars, susswein2023leveraging, Lefrancq2023, abousamra2024fitness}.
+These models estimate the relative fitness (or selective advantage) of circulating variant viruses from their frequency in sequencing data, typically represented by counts of variant sequences over time within a geographic region.
+Relative fitness in these models is often assumed to be constant and intrinsic to the variant of interest, however this may be an oversimplification of the transmission process.
+% Additionally, translating these relative fitness estimates to a population-level transmission advantage (in terms of variant infections per wildtype infection) typically requires assumptions on the generation time of the transmission though this can also be approached by jointly modeling the transmission process alongside frequencies \cite{Wallinga2006, figgins2022sars}.
+
+It has been shown that these transmission advantages differ geographically and temporally, suggesting that variant transmission advantages are not necessarily fixed and may be informed by within-region population differences \cite{figgins2022sars, vanDorp2022}.
+In fact, they may be well explained by regional differences in immune structure as Dadonaite et al.\ \cite{Dadonaite2023} show deep mutational scanning estimates of immune escape are well correlated with estimated variant growth advantages.
+Existing models which allow variant transmission advantages to change in time generally do not have a mechanistic underpinning for why transmission advantages exist and vary geographically and temporally \cite{figgins2022sars, susswein2023leveraging}.
+% These non-mechanistic transmission advantages are useful for real-time situation analysis though more work is required to develop theory for how various mechanisms determine viral fitness.
+% In particular, distinguishing between mechanisms of immune escape and transmissibility may improve our ability to make informed short-term forecasts or include other forms of data to explain patterns of relative fitness.
+This lack of mechanistic grounding limits our ability to accurately predict variant dynamics, especially in diverse geographic regions with varying levels of population immunity.
+
+In response to this gap, we introduce a novel framework that links variant dynamics directly to transmission mechanisms using compartmental models of infectious diseases.
+By modeling both intrinsic transmissibility and immune escape, we explain how shifts in population immunity shape the relative fitness of viral variants and select for immune escape over intrinsic transmissibility with increasing past exposure.
+Furthermore, including these mechanisms suggests that relative fitness varies in time, reflecting the evolving landscape of population immunity and exposure regardless of the underlying mechanism.
+
+Here, we present a novel non-parametric method for estimating time-varying fitness regardless of the underlying transmission mechanism.
+Alongside this development we introduce a ``selective pressure'' metric that quantifies the impact of variant turnover on population-level epidemic growth rates, as well as a latent immunity model that we use to estimate the underlying proportion of pseudo-immune groups within multiple geographies and pseudo-immune escape rates for circulating variants.
+Overall, our framework bridges the gap between genetic data and transmission dynamics, offering a new way to predict and manage viral outbreaks.
+
+% TB: These two below paragraphs on predicting epidemic growth and latent immunity are too detailed for the normal `preview' of manuscript contents.
+% Additionally, we introduce a ``selective pressure'' metric which quantifies the impact of variant turnover on population-level epidemic growth rates.
+% Using this metric alongside historical case data, we develop a method for predicting  growth in incidence rates from sequence counts alone.
+% This is especially useful when case numbers are under-reported or absent, as it can be used to give an early signal of variant-driven infection waves before widespread transmission occurs.
+%
+% Lastly, we develop a latent immunity model which we use to estimate the underlying proportion of pseudo-immune groups within multiple geographies and pseudo-immune escape rates for circulating variants.
+% These pseudo-immune groups serve as a proxy for the immune heterogeneity between and within regions and the estimated pseudo-escape correlate with titer distances for circulating variants and human sera.
+% This method enables a representation of variant similarity under escape-driven transmission similar to antigenic cartography using only genetic sequences.
+
+% TB: If we keep this text it should be moved to the Discussion
+% Overall, our framework bridges the gap between genetic data and transmission dynamics, offering a new way to predict and manage viral outbreaks.
+% By linking viral evolution to immune escape and transmissibility, we offer a powerful tool for predicting variant-driven outbreaks and managing future waves of SARS-CoV-2.
+% The selective pressure metric and latent immunity model provide critical insights into the epidemiological and immunological factors that drive variant success, improving real-time analysis using genetic sequence data alone and informing public health strategy.
+
+%%% Results
+
+\subsection*{Variant dynamics and relative fitness in multistrain models}
+
+Multi-strain models of epidemics have been developed to understand the competition between different viral strains that exhibit different levels of cross-immunity \cite{Gog2002, bedford2012canalization}.
+These models have typically been used to explain strain evolution in antigenically variable pathogens like seasonal influenza virus \cite{bedford2014integrating} and seasonal coronaviruses \cite{Kistler2021, Eguia2021}.
+
+We begin by modeling a population of $V$ exponentially growing variant viruses each with prevalence $I_v(t)$ and time-varying growth rate $r_v(t)$.
+By considering the difference in these growth rates, we can define the relative fitness as $\lambda_{v, u}(t) = r_v(t) - r_u(t)$.
+This relative fitness determines the change in the frequencies of the variants in the population
+
+\begin{equation}
+    f_v(t) = \frac{f_v(0) \exp \left( \int_0^t \lambda_{v, v^*}(s)ds \right)}{ \sum_{u=1}^{V} f_u(0) \exp \left( \int_0^t \lambda_{u, v^*}(s)ds \right)},
+\end{equation}
+
+where $v^*$ is a chosen pivot variant which fitness is defined relative to.
+
+In order to better understand frequency dynamics of pathogens with multiple co-circulating variants, we apply the above framework to compartmental models of epidemics, which can be written as time-varying exponential growth (detailed in Supplementary Text \ref{ssec:frequency_dynamics}).
+These models provide an intuition of how strain-level selection depends on the assumed transmission mechanism of the underlying epidemic model.
+This framework also generalizes several existing methods for relative fitness estimation and prediction (detailed in Supplementary Text \ref{ssec:existing_frequency_models}).
+We summarize dynamics of a three-variant mechanistic transmission model in Fig.~\ref{fig:vis_mechanisms}, where we compare a transmission variant $T$ with a 50\% increase in transmissibility ($\varTransmission=0.5$) to an escape variant $E$ that infects 5\% of hosts possessing wildtype immunity ($\varEscape=0.05$).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{./figures/vis_mechanisms.png}
+    \caption{
+      \textbf{Simulated variant dynamics in a mechanistic model.}
+      Mechanistic transmission models constrain variant frequency dynamics by specifying a functional form for relative fitnesses.
+      Simulations of a three-variant model including wildtype $W$, an intrinsic transmission variant $T$, and an immune escape variant $E$ show the relationship between population-level transmission and selection.
+      We begin the simulation with initial wildtype prevalence $I_\wt(0) = 1$, effective reproduction number $R_{0,\wt} = 1.4$, and duration of infection $1/\gamma = 3.0$ days.
+      We introduce transmissibility variant $T$ at $t=20$ with frequency $f_T(20) = 10^{-5}$ and a 50\% increase in transmissibility $\varTransmission_T = 0.5$.
+      We introduce escape variant $E$ at $t=70$ with frequency $f_E(70) = 10^{-6}$ that infects 5\% of hosts possessing wildtype immunity $\varEscape_E = 0.05$.
+      A. Prevalence $I$ by variant.
+      B. Exponential growth rate $r$ by variant.
+      C. Variant frequency $f$.
+      D. Fitness relative to wildtype $\lambda$.
+      E. Underlying immune pools.
+      F. Effective reproduction number $R_t$ by variant.
+    }
+    \label{fig:vis_mechanisms}
+\end{figure}
+
+% \subsection*{Estimating relative fitness using Gaussian Processes}
+
+Our approach shows that relative fitness is often dependent on the past exposure of a population (as discussed in Supplementary Text \ref{ssec:frequency_dynamics} and extended to full immune history models in Supplementary Text \ref{ssec:full_immune_history}).
+This suggests that serology, vaccination history, and immunological data generally can be informative of relative fitness.
+Additionally, when working with variant classifications, non-neutral evolution within a variant will cause the relative fitness of that variant to change in time.
+However, even in the absence of external data that can inform relative fitness, there is still hope.
+
+We develop a method for using approximate Gaussian processes to model variant relative fitness.
+Gaussian processes are probability distributions over functions, where the structure and smoothness of these functions are defined by a kernel that encodes correlations in time.
+These models are flexible and allow us to encode smoothness constraints, periodicity, and other structures \cite{Gortler2019a}.
+Gaussian processes allow us a non-parametric estimate of the relative fitness for variants through time (see Materials and Methods).
+
+Traditional Gaussian process, while flexible, face challenges for large time series and large data sets.
+Our approach overcomes this using a Hilbert Space Gaussian Process (HGSP) approximation, making the framework scalable for many variants and long time periods \cite{riutortmayol2022practical}.
+This enables real-time variant fitness estimation and can be applied to any frequency data regardless of the underlying mechanism.
+This model is used in Fig.~\ref{fig:gp_example} to estimate the relative fitnesses of different variants through time based on simulated variant sequence counts from frequencies shown in Fig.~\ref{fig:vis_mechanisms}.
+
+Later, we apply this model to empirical SARS-CoV-2 sequence data from 50 US states and England from 2021 to 2022 to estimate relative fitness for variants circulating in that period, but first we continue analytic investigation into fitness dynamics.
+
+\subsection*{Determining the transmisibility-escape tradeoff}
+
+To understand the fitness trade-off between transmissibility and immune escape, we consider dynamics with a wildtype virus $\wt$ with $\varTransmission_\wt = 0$ and $\varEscape_\wt = 0$, an increased transmissibility variant $\varT$ with $\varTransmission_\varT > 0$ and $\varEscape_\varT = 0$ and an immune escape variant $\varE$ with $\varTransmission_\varE = 0$ and $\varEscape_\varE > 0$.
+
+Following Equation \ref{eq:two_strain_relative_fitness}, we write relative fitnesses of the escape variant or transmissibility variant as
+\begin{align*}
+    \lambda_{\varE, \wt} &= \varEscape \beta \phi_{\wt}(t)\\
+    \lambda_{\varT, \wt} &= \varTransmission \beta S(t).
+\end{align*}
+
+In the simplest case where individuals are either susceptible or have wildtype immunity ($S(t) + \phi_{\wt}(t) = 1$), we can compute the critical immune fraction $\phi^{*}$ at which $\lambda_{\varE, \wt}(\phi^{*}) = \lambda_{\varT, \wt}(\phi^{*})$ as
+\begin{equation} \label{eq:critical_immunity}
+    \phi^{*} = \frac{\varTransmission}{\varEscape + \varTransmission}.
+\end{equation}
+
+For past exposure level greater than $\phi^{*}$ escape variants have a higher relative fitness.
+This trade off shows that increasing degree of escape entails that a lower proportion of past exposure is needed for escape variants to be preferred (Fig.~\ref{fig:transmission_tradeoff}).
+Additionally, this shows that when intrinsic transmissibility increases are limited escape is more likely to be a dominant mechanism for variant turnover.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{./figures/transmission_tradeoff.png}
+    \caption{
+      \textbf{Trade-off between degree of immune escape and increased transmissibility.}
+      A. Relative fitness for a transmissibility increasing variant $T$ with $\varTransmission_T=0.2$ and an immune escaping variant $E$ with $\varEscape_E=0.3$ for $R_{0, \wt}=2.8$ and $1 / \gamma = 3.0$ days.
+      The intersection point shows that after 40\% of the population has wildtype immunity, the escape variant has higher fitness.
+      B. The critical exposure proportion is shown for various escape fraction and transmissibility increase. Above the critical exposure proportion, we expect dominance of escape variants.
+      C. The minimum escape fraction needed for second waves to be comprised of escape variant assuming competition with transmissibility increase variants and first wave with a given $R_{0}$.
+    }
+    \label{fig:transmission_tradeoff}
+\end{figure}
+
+\subsection*{Initial growth rates insufficient for predicting short-term frequency growth}
+
+One question of interest is whether knowledge of mechanism meaningfully informs our ability to forecast short-term frequency growth.
+The first step to addressing this is to understand how the relative fitness may change in time to understand the predictability of relative fitness in the short-term.
+
+We find that the mechanistic forms analyzed in this paper (Supplementary Text \ref{ssec:frequency_dynamics}) can be represented as weighted combinations of $B$ time-varying functions $\Upsilon_{b}(t)$ with weights $\beta_{b}$.
+We can think of each of these functions $\Upsilon_b$ as an immune background and the coefficient $\beta_{b}$ as a transmission differential, so that
+\begin{align*}
+\lambda_{v,u}(t) = \sum_{1 \leq b \leq B} \beta_{b} \Upsilon_{b}(t).
+\end{align*}
+
+Even in the case of complete knowledge of the relative fitness and the underlying fitness contributions in the present and past, we have that change in the relative fitness is determined by
+\begin{align*}
+    \frac{d\lambda_{v,u}}{dt} = \sum_{1 \leq b \leq B} \beta_{b} \frac{d\Upsilon_{b}}{dt}(t).
+\end{align*}
+By considering a Taylor expansion of the relative fitness about the point of estimation $t_{0}$, we can approximate the relative fitness in the future as:
+\begin{align*}
+    \lambda_{v,u}(t) \approx \lambda_{v,u}(t_{0}) + (t - t_0)\sum_{1\leq b \leq B} \beta_b \frac{d\Upsilon_b}{dt}(t_0).
+\end{align*}
+This suggests small differences in the form of $\lambda_{v,u}(t)$ can lead to meaningful differences in the future relative fitnesses through changes in the underlying immune backgrounds.
+
+We investigate whether relative fitnesses vary predictably in the short-term regardless of mechanism.
+To do so, we apply the two-variant model developed in previous sections for different mechanisms of immune escape and increased transmissibility.
+We fix the relative fitness of the novel variant at a prediction time $t_{0}$ using Equation \ref{eq:critical_immunity} and assess the change in the relative fitness in the short-term.
+We find that although relative fitness trajectories share the same decreasing shape, they may decline at different rates depending on the mechanism (Fig.~\ref{fig:short_term_divergence}).
+This can lead to substantial changes in the predicted incidence depending on the assumed mechanism and affects to overall rate of turnover.
+
+\subsection*{Correlations insufficient for mechanism identification}
+
+Although correlations between vaccination uptake and variant growth advantage are often observed, these are alone may not be sufficient to identify the mechanism behind a variant's success.
+A variant’s fitness advantage may arise from increased transmissibility, immune escape, or a combination of both.
+Even in the absence of immune escape, the relative fitness of a variant depends on the proportion of the population that is susceptible to infection and therefore changes with both past exposure and vaccine uptake (Supplementary Text \ref{ssec:frequency_dynamics}).
+To illustrate this, we simulate the spread of a variant with increased transmissibility in populations with varying initial vaccination levels.
+
+In populations with lower vaccination levels, the variant’s prevalence peaks more sharply and its relative fitness declines quickly as immunity accumulates within the population (Fig.~\ref{fig:mechanism_identification}A-C).
+In contrast, higher vaccination levels constrain relative fitness, leading to a delayed peak in prevalence and more stable relative fitness as the existing immunity limits the variant’s spread (Fig.~\ref{fig:mechanism_identification}A-C).
+Even without immune escape, estimated growth advantages for this variant decrease with increasing vaccination uptake near the beginning of an epidemic (Fig.~\ref{fig:mechanism_identification}D).
+Later in the epidemic, this relationship reverses with estimated growth advantages over the full period increasing with initial vaccination levels, which may be mistaken as signal for immune escape (Fig.~\ref{fig:mechanism_identification}E).
+% At very high vaccination levels, we see the estimated growth advantage falls off sharply when both variants are declining in prevalence.
+% This occurs at a critical vaccination threshold of $1 / R_v$ where $R_v$ is the effective reproduction number of the variant (Fig.~\ref{fig:mechanism_identification}E).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{./figures/mechanism_identification.png}
+    \caption{
+      \textbf{Relative fitness is correlated with vaccination levels in the absence of immune escape.}
+      We simulate the growth of a pure transmissibility increased variant at varying levels of vaccination.
+      Darker colors represent lower vaccine uptake.
+      We identify an early growth period where relative fitness is at its highest; the cutoff for this period is denoted with a vertical dashed line.
+      A. Prevalence of variant, each line is its own simulation.
+      B. Frequency of variant.
+      C. Relative fitness for variant over time.
+      D. Estimated log growth advantage using linear regression of log relative frequency of variant over wildtype using only data before the early cutoff.
+      E. Same as D. but using data from the entire period shown.
+    }
+    \label{fig:mechanism_identification}
+\end{figure}
+
+% This analysis shows a limitation in the ability of correlation-based analyses on growth advantage to identify the underlying mechanisms of variant fitness.
+% By explicitly accounting for the dynamics of immunity and transmissibility within populations, incorporating epidemiological structure in these models might provide a good foundation for understanding variant success under assumed or scientific-motivated mechanisms and enable comparison between competing mechanisms.
+
+This analysis shows that correlation-based methods alone may struggle to identify the true mechanisms driving a variant’s success especially under the assumption of a fixed growth advantage.
+By explicitly considering how immunity and transmissibility interact within populations, models that incorporate these dynamics may provide a stronger foundation for understanding why certain variants spread.
+% This approach also enables clearer comparison between different potential mechanisms behind variant fitness.
+
+% Variant growth advantages can be correlated with vaccination proportions even in the absence of immune escape.
+% Simulated multiple epidemics of a pure increased transmissibility variant at varying levels of initial vaccination and was able to see that estimated growth advantages, computed using a logit linear model, were correlated with initial vaccination fraction.
+% We find that you can estimate association of increased relative fitness due to vaccination in the absence of immune escape (Fig.~\ref{fig:mechanism_identification}).
+% This appears to hold up until both variants' initial effective reproduction number is below 1 i.e. $V_{0} > 1 / R_{v}$.
+
+\subsection*{Quantifying selective pressure}
+
+Although it is useful to quantify the relative fitnesses of individual variants, we are often interested in quantifying the overall effects of selection in the population.
+With this in mind, we can derive a metric of overall selective pressure $\psi(t)$ which describes the distribution of relative fitness in the population
+\begin{equation}
+\psi(t) =  \Expect_{f(t)}\left[ \frac{d \lambda_v}{d t}\right] +  \Var_{f(t)}[\lambda_{v}].
+\end{equation}
+This selective pressure metric serves as an indicator for high fitness variants arising in the population as change.
+High fitness variants rising from initially low frequency leads to large increases in the variance of the fitness distribution and therefore increases in the selective pressure.
+
+The selective pressure metric enables us to decompose changes in the average growth rate in the population $d\bar{r}/dt$ to an evolutionary component $\psi$ and a residual baseline growth rate $r_\wt$ following
+\begin{equation}
+    \frac{d\bar{r}}{dt} = \frac{dr_{\wt}}{dt} + \psi(t).
+\end{equation}
+This shows that increased selective pressure through emerging high fitness variants can drive waves of infection.
+Further, this suggests that differences between growth rates based on selective pressure alone and observed rates are attributable to changes in baseline transmission over time.
+This mirrors ideas of Fisher's theorem of natural selection and its later interpretations with the variance of fitness contributing directly to the change in transmission rates (or fitness) \cite{Ewens1989, Ewens2024}.
+This definition of selective pressure captures how relative fitness contributes to epidemic growth.
+This is similar to ideas quantifying rates of adaptation via fitness flux \cite{Mustonen2010}.
+
+In this case, the overall growth rate $\bar{r}$ and relative incidence $I(t) / I(0)$ can be written directly using the cumulative selective pressure $\Psi(t) = \int_0^t \psi(s)ds$ as follows:
+\begin{align}
+    \bar{r}(t) &= \bar{r}(0) + [r_{\wt}(t) - r_{\wt}(0)] + \Psi(t)\\
+    \frac{I(t)}{I(0)} &= \exp \left( \int_0^t [r_{\wt}(s) + \Psi(s)]ds \right).
+\end{align}
+In addition to estimating the relative fitness, metrics derived from these models can be informative of much more.
+
+Our ``selective pressure'' metric which allows us to model the contribution of evolution to changes in the epidemic growth rate of a population and is independent of pivot choice for relative fitness estimation.
+This metric acts as an early warning system for variant-driven outbreaks, especially in scenarios where case data are sparse or delayed.
+This metric can be computed using any method that estimates variant frequency and relative fitnesses and serves as a simple tool for understanding the contribution of selection to the overall population dynamics.
+% This approach is compatible with any method which estimates frequency and relative fitness, enabling broad applicability to many pathogens.
+
+The full derivation of this metric and its contribution to the overall growth rate can be found in Supplementary Text \ref{ssec:deriving_selective_pressure}.
+
+\subsection*{Predicting epidemic growth rates using selective pressure}
+
+Motivated by the relationship between epidemic growth rate and selective pressure demonstrated above, we develop a predictive model of epidemic growth rate using estimates of selective pressure.
+% By integrating fitness estimates and variant frequency dynamics, selective pressure can be used to predict epidemic growth rates, empowering public health agencies to anticipate and respond to new variant-driven outbreaks.
+Using empirical SARS-CoV-2 case and sequence data from 50 US states between January 2021 and November 2022, we estimate epidemic growth rates through time in each state using case counts, and estimate selective pressure through time using our approximate Gaussian process model on sequence counts  (Fig.~\ref{fig:selective_pressure_prediction} A--C.)
+Here we group variants at the granularity of Nextstrain clades \cite{aksamentov2021nextclade} resulting in 28 distinct variants over this time period.
+As expected we see that relative fitness increases through time and that selective pressure corresponds to speed of clade turnover where the sweep of Omicron BA.1 (clade 21K) yields the strongest signal of selective pressure (Figs.~\ref{fig:selective_pressure_group_1}--\ref{fig:selective_pressure_group_5}).
+We use these estimates to fit a gradient-boosted regressor to predict epidemic growth rates using selective pressure from the most recent 28 days, reserving data between July 2022 and November 2022 for testing (Fig.~\ref{fig:selective_pressure_prediction} D--I, Fig.~\ref{fig:empirical_growth_rate_predictions_all}).
+This regressor is chosen via time series cross-validation among model architectures and grid-search parameter tuning (Fig.~\ref{fig:growth_rate_predictions_model_comparison}).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{./figures/selective_pressure_prediction.png}
+    \caption{
+      \textbf{Predicting epidemic growth rate using estimated selective pressure.}
+      A. Variant frequency estimated using the Gaussian process relative fitness model between January 2021 and November 2022 for sequence count data from Washington state.
+      B. Case counts from Washington state.
+      C. Selective pressure computed using estimated variant frequencies and relative fitnesses from Washington state.
+      D-F. Predictions for empirical growth rate from selective pressure for selected US states.
+      The light gray period is the training period and the darker gray is the testing period.
+      G-I. Predictions for empirical growth rate from selective pressure for countries South Africa, South Korea and the UK.
+      J. Prevalence estimates for England from ONS Infection Survey.
+      K. Estimated selective pressure in England.
+      L. Empirical growth rates (gray) computed from prevalence estimates and predictions from our model (green) computed from selective pressure.
+    }
+    \label{fig:selective_pressure_prediction}
+\end{figure}
+
+We observe a strong correspondence between observed epidemic growth rate and model predictions with Pearson $R^2$ in the training period of 0.576 and a weaker Pearson $R^2$ in the testing period of 0.077.
+As case reporting declined over this period, we expect weaker correspondence between our predictions and epidemic growth rates computed from case data.
+To address this, we sought to evaluate the out-of-sample fit on case data from other countries e.g. South Africa, South Korea, and the United Kingdom, achieving an $R^2$ of $0.196$.
+
+To address the potential for this method under steady reporting rates, we validate this method by predicting the epidemic growth rates in England derived from the Office for National Statistics (ONS) Coronavirus Infection Survey between February 2022 and November 2022.
+The ONS Infection Survey represented a randomly sampled panel survey of households where nasal swabs were collected regardless of symptom status allowing for prevalence estimates despite faltering case reporting \cite{pouwels2021community}.
+Our model is able to replicate patterns seen in epidemic growth rates in England derived from ONS data (Fig.~\ref{fig:selective_pressure_prediction} J--L), achieving a coefficient of variation of $R^2 = 0.329$ and mean absolute error of 0.026.
+Performance is significantly better for the first two subsequent waves, falling off in accuracy for the fall 2022 BQ.1 (clade 22E) wave.
+
+Although these predictions can be biased by non-evolutionary effects on the epidemic growth, this approach provides a simple measure of epidemic growth in the absence of high quality case counts using sequence data alone.
+
+\subsection*{Latent factor model of relative fitness}
+
+The representation of relative fitness using discrete immune backgrounds suggests that there may be low-dimensional structure to variant relative fitness.
+To generate pseudo-estimates of this latent factors, we develop and implement our method for latent factors models of relative fitness.
+This model assumes that variants intrinsically escape the immune responses with particular groups and that differences in a variant's relative fitness between geographies is attributable to differences in immunity between populations.
+This enables us to estimate a pseudo-escape rates for variants as well as pseudo-immunity groups within geographies over time.
+
+We generate Pango lineage-level sequence counts for 18 countries and 53 variants between March 2023 and March 2024.
+These 18 countries were chosen based on availability of sequence data.
+Small lineages which do not meet a count threshold are collapsed into their parent lineages.
+This leaves us with a total of 53 variants, so that each variant met a threshold for number of sequences available.
+
+Using these sequence counts, we apply our latent factor model to estimate the relative fitness of each variant over time in each country, pseudo-escape rates for each variant, and pseudo-immunity for each country simultaneously for $D=10$ pseudo-immune groups.
+This model is significantly constrained relative to estimating the time-varying fitness independently in each location, resulting in a model with 2,752 parameters compared to 7,488 parameters in the independent model.
+
+The results of this model are visualized in Fig.~\ref{fig:latent_immune} for several selected variants and countries of interest.
+Our results show that closely related Pango lineages are often assigned similar pseudo-escape values suggesting that this is capturing some evolutionary structure to immune escape.
+Further, our model shows that these groups of lineages tend to target particular immune groups such as clade 24A (JN.1, JN.1.1, JN.1.4) has high pseudo-escape in dimensions 3 and 4.
+If immune escape is the dominant mechanism for relative fitness difference, we expect that differences in immune response between variants from serological data would mirror differences in our pseudo-escape space.
+Using human serological data from Jian et al \cite{Jian2023}, we compute titer distances as average log2 differences in titer values between pairs of variants.
+We compare these distances to distances in our pseudo-escape space (Fig.~\ref{fig:latent_immune}G), finding the distances between distinct pairs in the pseudo-escape space are correlated with these titer differences between variants ($R^2$ = 0.402).
+We bootstrap this analysis among 1,000 replicates to assess significance of this relationship (Fig.~\ref{fig:latent_immune_bootstrap}, $p < 0.001$).
+Additionally, we subset by exposure history and find that cohorts with only very recent infection correlate more poorly than WT vaccine cohort or cohorts with more complex exposure histories (Fig.~\ref{fig:titer_distance_correlations_by_group}).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{./figures/latent_immune.png}
+    \caption{
+      \textbf{Latent factor models of immunity describe variant dynamics.}
+      We fit the latent immunity factor model to recent SARS-CoV-2 sequence data globally.
+      A. Variant frequency. Lines are colored to show 4 variants of interest (of 53 total variants) with the style of the line denoting 3 countries of interest (of 18 total countries).
+      B. Estimated relative fitness for selected variants and countries.
+      C. Estimated pseudo-immunity cohorts (PIC) over time for multiple countries ordered by decreasing share in the first geography
+      D, E. Dimensionality-reduced pseudo-escape rates using multidimensional scaling (MDS).
+      F. Estimated pseudo-escape rates for each variant relative to pivot variant.
+      H. Comparing pairwise distance between variants in the pseudo-immune space to observed distances in human titer data.
+    }
+    \label{fig:latent_immune}
+\end{figure}
+
+We chose $D=8$ for our primary analysis by noting the point at which the loss function seems to stagnate with increasing $D$ i.e.\ the ``elbow'' method (Fig.~\ref{fig:latent_factor_dimension}A).
+% \tbc{The text says that $D=10$ but figure \ref{fig:latent_immune} shows 8 groups. I believe that 8 is correct and I've corrected text accordingly. Please update if this was incorrect.}
+% MF: Made slight changes to text here
+Further, we observe that Bayesian Information Criterion (BIC) is minimized between 7 and 9 groups (Fig.~\ref{fig:latent_factor_dimension}D).
+However, the exact choice of latent immune dimensionality is necessarily somewhat arbitrary and we observe significant correlations with empirical titer data for fewer dimensions as well, although $D=8$ also maximizes this correlation (Fig.~\ref{fig:latent_factor_dimension}B) and its significance is maintained for all dimensions $D > 8$ tested.
+Analogous figures showing pseudo immunity and pseudo antigenic relationships across variants can be seen for $D=2$ in Fig.~\ref{fig:latent_factor_2}, $D=4$ in Fig.~\ref{fig:latent_factor_4}, $D=6$ in Fig.~\ref{fig:latent_factor_6} and $D=10$ in Fig.~\ref{fig:latent_factor_10}.
+
+This approach can be applied to other antigenically variable, such as influenza, making it broadly applicable beyond SARS-CoV-2.
+In fact, there is more utility for pathogens with larger geographic differences in immunity since this approach enables to estimate the proportion of these latent immune pools in the population and how they vary geographically and over time alongside variant difference.
+By approximating antigenic differences using sequence data alone, this method offers for a deeper understanding of immune dynamics and how they shape variant success in the presence of immune escape.
+This enables an embedding similar to those from antigenic cartography but without the need for serological data and based purely on observed variant fitness.
+
+\subsection*{Conclusions, limitations, and future work}
+
+Our study demonstrates the utility of multi-strain mechanistic models in interpreting variant frequency dynamics.
+This enables a more detailed picture of variant success in environments with heterogeneous population immunity.
+Our mechanistic grounding of variant fitness allows for investigations into trade-offs between intrinsic transmissibility increase and immune escape, prediction of epidemic dynamics from sequence data alone and inference of antigenic relatedness among variants from differences in success across geographies.
+
+% One key insight from this was the trade-off between intrinsic transmissibility increase and immune escape.
+% We showed that this trade-off is shifted by changes in population immunity, so that immune escape dominates as exposure increases.
+% Though there are limits to our ability to attribute dynamics to particular mechanisms from frequency data alone, the structure of these models suggests that we may improve forecasting by incorporating information about empirically supported mechanisms such as immune escape via antigenic evolution.
+
+Despite these advances, there are limitations to our approach.
+Long-term forecasts remain difficult, particularly as new variants with unknown fitness profiles emerge.
+This framework suggests that considering both the escape against individual immune backgrounds and the diversity in human immune escape is most useful for improving forecasts of relative fitness.
+Additionally, our models, while powerful in estimating short-term variant dynamics, rely on assumptions about transmission mechanisms that may not always hold across different pathogens or contexts.
+In fact, as we've shown, it's entirely possible for shifts in population immunity to change the dominant transmission mechanism.
+
+Furthermore, the models considered here are deterministic in nature and do not explicitly model the emergence of variant viruses only the dynamics after their successful introduction.
+In reality, there are biological constraints on the types of variants that are produced in nature and even if there is a `true' fitness boost, the chance for stochastic extinction of beneficial variants remains.
+These constraints present trouble for long-term forecasting as it will require a model of mutation or emergence, tying the potential for a variant to emerge with its potential to transmit in the current environment.
+Future work should focus on improving the integration of real-time genomic data with serological and epidemiological data, providing a more comprehensive understanding of variant dynamics over time.
+
+% These ideas are already represented in existing literature through the form of long-term forecast models which incorporate phylogenetic and molecular data which is thought to be indicative of selection and immune escape. \cite{Huddleston2020, luksza2014predictive}
+
+% Future work should seek to identify and integrative informative data sources for relative fitness estimation and forecasting for particular pathogens, providing a more comprehensive understanding of variant dynamics over time.
+
+% Limitations of existing simple mechanism models
+% The compartment models discussed here are described by simple mechanisms and more work is needed to adapt this framework to complicated epidemic models such as those with non-exponential generation times could be useful.
+% That being said, models which account for the appearance of genetic variants through mutation exist, often assuming a latent antigenic space with which fitness is determined.
+%
+% However, it is important to note that these models may not be reliable for longer terms forecasts due to the emergence of new variants or improper specification of mechanism.
+
+% Despite the limitations discussed above, the framework presented here illustrates the importance of transmission mechanism in the evolution of pathogens, highlighting the importance of both variant characteristics and population susceptibility in selection.
+% We suggest that future models of pathogen transmission and evolution attempt to incorporate current knowledge of the transmission process into their forecasts.
+% In particular, for viruses such as influenza and SARS-CoV-2 which undergo antigenic evolution, our work suggests that incorporating knowledge on both the diversity in human immune response and the escape potential of emerging variants could prove useful in improving long-term forecasts of the viral population.
+
+In conclusion, our framework represents a significant advance in our understanding of viral evolution and transmission dynamics.
+By linking variant fitness to specific transmission mechanisms, we provide a more nuanced and accurate prediction of how variants will spread and impact population-level epidemic growth.
+The selective pressure metric and latent immunity model offer new tools for public health agencies to monitor viral evolution in real time, enabling proactive intervention and insight into the variant difference and wave potential.
+While our work has been applied to SARS-CoV-2, the methods developed here are broadly applicable to other evolving pathogens, offering a versatile approach for improving epidemic forecasting, variant monitoring, and overall pandemic preparedness.
+
+\subsection*{Acknowledgements}
+
+We thank Ivana Bozic, Betz Halloran, Mark Kot and Erick Matsen, as well as members of the Bedford Lab for their feedback on this work.
+We gratefully acknowledge all data contributors, ie the Authors and their Originating
+laboratories responsible for obtaining the specimens, and their Submitting laboratories for generating the genetic sequence and metadata and sharing via the GISAID Initiative, on which this research is based.
+We have included an acknowledgements table in the associated GitHub repository under \texttt{data/final\_acknowledgements\_gisaid.tsv.xz}.
+
+\subsubsection*{Funding}
+
+This work is supported by NIH NIGMS award R35 GM119774 to TB and a Howard Hughes Medical Institute COVID-19 Collaboration Initiative award to TB.
+MDF is an ARCS Foundation scholar and was supported by the National Science Foundation Graduate Research Fellowship Program under grant No.\ DGE1762114.
+TB is a Howard Hughes Medical Institute Investigator.
+
+\subsubsection*{Author contributions}
+MF conceived the study.
+MF, TB gathered sequence and case count data.
+MF designed and implemented the models.
+MF performed the analysis.
+MF, TB interpreted the results.
+MF, TB wrote the paper.
+
+\subsubsection*{Competing interests}
+
+All authors declare no competing interests.
+
+\subsubsection*{Data and materials availability}
+
+Source code used to generate figures, model implementations, and sequence count data are available at \href{https://github.com/blab/relative-fitness-mechanisms}{github.com/blab/relative-fitness-mechanisms}.
