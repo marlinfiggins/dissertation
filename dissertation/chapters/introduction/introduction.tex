@@ -373,7 +373,7 @@ We can introduce a per-variant mean squared error as
            &= \Expect_{X_{t} \mid V=v}[\left(G(x) - \Expect_{X_{t} \mid V=v}[G] + \Expect_{X_{t} \mid V=v}[G] - \overline{G}_v\right)^2 ]\\
            &= \Var_{X_{t} \mid V=v}[G] + (\Expect_{X_t \mid X=v}[G] - \overline{G}_v)^2,
 \end{align}
-which depends on the intrinsic variance with the variant and the squared bias in the estimated variant mean.
+which depends on the intrinsic variance of the phenotype within the variant and the squared bias in the estimated mean phenotype of the variant.
 Using that the probability of each variant is equal to its frequency $f_v(t)$, we can bound the total error with the Cauchy-Schwarz inequality:
 
 \begin{align}
@@ -466,7 +466,7 @@ We'll now outline the essential components of this process, highlighting how the
 The first step in evolutionary forecasting is summarizing genetic diversity in a way that captures key patterns  while enabling fitness estimation.
 Genetic diversity reflects the interplay of selection, drift, and mutation in shaping frequency.
 
-When quantifying genetic diversity in practice, we typically work with variant classification and the frequencies of these variants as summaries of this genetic diversity. 
+When quantifying genetic diversity in practice, we typically work with variant classifications and the frequencies of these variants as summaries of this genetic diversity.
 These variant frequencies are foundation of these forecasts as they reflect the fitness of these variants, the stochastic effects of genetic drift, and diversification within a variant due to mutation.
 
 Relative fitness estimation is central to evolutionary forecasting and a central task of this dissertation.
