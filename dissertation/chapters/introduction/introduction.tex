@@ -351,9 +351,7 @@ This allows us to get estimates and expectations of phenotype without sequence-l
 \paragraph{Error Bounds and Limitations}
 
 How well this approximation works depends on how similar the sequences within the variant are with respect to the trait $G$. 
-
 We can see this by developing a bound 
-
 \begin{align}
   \epsilon &= \abs{\Expect_{X_t}[G]  - \sum_{u} \overline{G}_u f_{u}(t)}^2\\ 
            &= \abs{\sum_{u=1}^{K} (\Expect_{X_{t} \mid V=u}[G] - \overline{G}_u) f_u(t)}^2,
@@ -367,7 +365,7 @@ We can introduce a per-variant mean squared error as
            &= \Var_{X_{t} \mid V=v}[G] + (\Expect_{X_t \mid X=v}[G] - \overline{G}_v)^2,
 \end{align}
 which depends on the intrinsic variance of the phenotype within the variant and the squared bias in the estimated mean phenotype of the variant.
-Using that the probability of each variant is equal to its frequency $f_v(t)$, we can bound the total error with the Cauchy-Schwarz inequality:
+Using that the probability of each variant is equal to its frequency $f_v(t)$, we can bound the total error with the Cauchy-Schwarz inequality
 
 \begin{align}
   \epsilon  &= \abs{\sum_{u} (\Expect_{X_{t} \mid V=u}[G] - \overline{G}_u) f_u(t) }^2\\
@@ -421,26 +419,24 @@ We begin by considering a population of viral sequences over time $X_t$.
 Through genomic surveillance, we can sample from the distribution of viruses to observe sequences $x_t^{(1)}, \ldots, x_t^{{N_t}} \sim X_t$.
 
 We use stochastic differential equations (SDEs) motivated by our earlier results to model the evolution of this virus.
-Assume that genotype $x$ has frequency $f(x, t)$, we can model the change in frequency of that genotype as:
+Assume that genotype $x$ has frequency $f(x, t)$, we can model the change in frequency of that genotype as
 
 \begin{equation}
   df_x(t) = \underbrace{\left[\lambda_{x}(t) - \bar{\lambda}(t)\right] f_x(t) dt}_{\text{selection}} + \underbrace{\sigma(x, t) d\vec{W}_{t}}_{\text{drift}} + \underbrace{\mu \frac{\partial^2 }{\partial x^2} f(x,t) dt}_{\text{mutation}},
 \end{equation}
-
 where $\lambda_x(t)$ is the fitness of genotype $x$ at time $t$, $\bar{\lambda}(t) = \int_{\mathcal{X}} \lambda_z(t)\cdot f_z(t) dz$ is the mean fitness in the population at time $t$.
 We also have $\sigma(x, t) = \sqrt{\frac{f(x,t) (1 - f(x,t))}{N_e}}$ which captures genetic drift i.e. the random fluctuations in the frequency due to randomness in reproduction.
 Lastly, we have a diffusion term $\mu \frac{\partial^2 }{\partial x^2} f(x,t) dt$ which describes the diffusion of frequency across genotype space due to mutation where $\mu$ is a mutation rate.
 
 By leveraging the variant assignment framework introduced earlier, we can simplify our models by tracking the dynamics among variants to predict future changes in viral populations.
-Our SDEs are reduced to a system of $V$ equations representing each variant:
+Our SDEs are reduced to a system of $V$ equations representing each variant
 
 \begin{equation}
   df_v(t) = \left[\lambda_{v}(t) - \bar{\lambda}(t)\right] f_v(t) dt + \vec{\Sigma} d\vec{W}_{t},
 \end{equation}
 where we've now dropped the mutation term.
 This reduced system of equations depends on the variant level fitnesses over time, the mean fitness $\bar{\lambda}(t) = \sum_{u} \lambda_u(t)\cdot f_u(t)$, and a $V \times V$ covariance matrix $\Sigma$ for genetic drift.
-The covariance matrix $\Sigma$ for the genetic drift between variants has elements:
-
+The covariance matrix $\Sigma$ for the genetic drift between variants has elements
 \begin{equation}
 \Sigma_{ij} = \begin{cases}
   \frac{f_i (1 - f_i)}{N_e}, & \text{if } i = j, \\
@@ -488,7 +484,9 @@ Each chapter contributes to building a comprehensive framework for understanding
 
 \paragraph{Chapter 2: Inferring variant-specific effective reproduction numbers from combined case and sequencing data}
 
-In this chapter, we develop a model that jointly estimates variant-specific reproduction numbers ($R_t$) and relative fitness. The integration of case and sequencing data allows us to make statements about both transmission rates and evolutionary dynamics simultaneously. This mechanistic framework provides deeper insights into the joint behavior of evolution and transmission.
+In this chapter, we develop a model that jointly estimates variant-specific reproduction numbers ($R_t$) and relative fitness.
+The integration of case and sequencing data allows us to make statements about both transmission rates and evolutionary dynamics simultaneously.
+This mechanistic framework provides deeper insights into the joint behavior of evolution and transmission.
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
@@ -506,7 +504,7 @@ The emphasis is on assessing the performance of statistical models and the impor
 \begin{itemize}
         \item Development of a framework and pipeline for evaluating MLR models and other fitness-based models in the context of short-term forecasting, focusing on forecast accuracy and reliability.
         \item Demonstrates the limitations of statistical models when they do not account for detailed transmission and immunity dynamics, emphasizing the need for more comprehensive approaches.
-        \item Identifies the role of data quality and sequencing capacity in enabling accurate forecasts, highlighting that a minimum of 1000 sequences per week is necessary for reliable predictions.
+        \item Identifies the role of data quality and sequencing capacity in enabling accurate forecasts, suggesting that a minimum of 1,000 sequences per week is necessary for reliable short-term predictions.
         \item Sets the stage for models in later chapters that will integrate external data to improve forecast reliability by better capturing transmission mechanisms and immune escape.
 \end{itemize}
 
@@ -514,7 +512,8 @@ This chapter provides a rigorous evaluation of fitness-based forecasting models 
 
 \paragraph{Chapter 4: Frequency dynamics predict viral fitness, antigenic relationships and epidemic growth}
 
-Building on the insights from Chapters 2 and 3, this chapter develops a comprehensive framework that combines epidemiological theory and population genetics to estimate time-varying relative fitness. This chapter introduces several important innovations, including the selective pressure metric, a latent factor model, and a focus on immune escape as a critical factor for predicting viral evolution.
+Building on the insights from Chapters 2 and 3, this chapter develops a comprehensive framework that combines epidemiological theory and population genetics to estimate time-varying relative fitness.
+This chapter introduces several important innovations, including the selective pressure metric, a latent factor model, and a focus on immune escape as a critical factor for predicting viral evolution.
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
@@ -528,7 +527,8 @@ This chapter provides a deeper understanding of how transmission mechanisms and 
 
 \paragraph{Chapter 5: Forecasting SARS-CoV-2 lineage success from molecular data}
 
-Building on the constraints and limitations identified in Chapters 3 and 4, this chapter develops a novel framework that integrates molecular phenotypes with relative fitness innovations to forecast the success of SARS-CoV-2 variants. By leveraging deep mutational scanning data, these models provide a mechanism-informed approach to disentangle the effects of shared ancestry and quantify the contributions of immune escape and transmissibility-related traits to lineage success.
+Building on the constraints and limitations identified in Chapters 3 and 4, this chapter develops a novel framework that integrates molecular phenotypes with relative fitness innovations to forecast the success of SARS-CoV-2 variants.
+By leveraging deep mutational scanning data, these models provide a mechanism-informed approach to disentangle the effects of shared ancestry and quantify the contributions of immune escape and transmissibility-related traits to lineage success.
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
