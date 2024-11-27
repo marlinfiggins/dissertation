@@ -4,27 +4,27 @@ The emergence of SARS-CoV-2, the virus behind COVID-19, has drastically changed 
 First identified in late 2019, this virus quickly spread globally, triggering a pandemic that has impacted millions.
 
 %TODO: Add discussion on recurrent waves
-Following the end of the pandemic, there have been multiple infection waves caused by seasonality in transmission as well as evolution of novel SARS-CoV-2 variants which can evade existing immune responses in individuals with past exposure.
+Following the end of the pandemic, there have been multiple infection waves caused by seasonality in transmission as well as evolution of novel SARS-CoV-2 variants that can evade existing immune responses in individuals with past exposure.
 
 %TODO: Cite various papers mentioned throughout on individual variant waves.
 
 Immune escape driven by antigenic evolution has motivated annual updates to the COVID-19 vaccine to better protect individuals with weakened immune systems and those without past or recent exposure.
 
-Evolution in SARS-CoV-2 has produced genetic variants which exhibit strain-specific immune responses in humans as measured through serology, neutralization titers, and deep mutational scanning assays. %TODO: Cite here
+Evolution in SARS-CoV-2 has produced genetic variants that exhibit strain-specific immune responses in humans as measured through serology, neutralization titers, and deep mutational scanning assays. %TODO: Cite here
 
 Therefore, understanding both the virus's evolution and transmission dynamics are crucial for managing the pandemic and crafting effective public health strategies.
-As SARS-CoV-2 continues to transmit, the virus will mutate and new variants with unique traits emerge, influencing their transmissibility, severity, and ability to evade immunity.
+As SARS-CoV-2 continues to spread, the virus will mutate and new variants with unique traits emerge, influencing their transmissibility, severity, and ability to evade immunity.
 % This constantly shifting landscape underscores the importance of forecasting the emergence and spread of these viral variants.
 
-Novel genetic variants are often produced due to mutations in currently circulating virus populations.
-These mutations can sometimes provide fitness advantages to members of the population allowing them to out-compete other variants through several mechanisms such as partial immune escape, increased transmissibility, among others.
+Novel genetic variants often arise due to mutations in currently circulating virus populations.
+These mutations can sometimes provide fitness advantages to members of the population allowing them to out-compete other variants through mechanisms such as partial immune escape, increased transmissibility, among others.
 This interplay of mutation, transmission, and selection leads to evolution in the population.
 Therefore, understanding the genetic composition of viral populations and its relation to virus phenotype can be useful for understanding the current and future epidemic potential of viral variants.
 
 Forecasting these variants is essential for predicting future infection waves, guiding public health measures, and informing vaccine development.
 However, this task is challenging due to the virus's rapid mutation rate and the dynamic nature of human immunity and behavior. 
 
-Accurate models are needed to predict how these variants will evolve and spread, helping to monitor SARS-CoV-2 evolution and mitigate future outbreaks.
+Accurate models are needed to predict how these variants will evolve and spread, to monitor SARS-CoV-2 evolution, and to mitigate future outbreaks.
 
 %TODO: Though SARS-CoV-2 is the primary focus of this dissertation. These methods should generalize.
 
@@ -37,7 +37,7 @@ One of the fundamental challenges in forecasting SARS-CoV-2 variants is accounti
 In order to contextualize this work, we will begin with an overview of existing methods for understanding infectious disease transmission, relevant epidemiological quantities, and their relationships to one another.
 
 %TODO: Extend this section, we really also want to menion effective population size, genetic drift .etc
-We will then discuss existing methods for understanding population turnonver from population genetics, their relationship to some of the related quantities in the epidemiological context.
+We will then discuss existing methods for understanding population turnover from population genetics and their relationship to some of the related quantities in the epidemiological context.
 
 We will then provide an overview of Bayesian inference, model development, and optimization methods that will be used throughout this dissertation to estimate quantities from data and make predictions while quantifying uncertainty.
 
@@ -58,21 +58,20 @@ We begin with the classic SIR model \cite{KermackMcKendrick1927}.
 
 We assume that there are three types of individuals in the population: susceptible ($S$), infected ($I$), and recovered $R$. 
 Susceptible individuals can become infected, infected individuals eventually recover (or die), and recovered individuals cannot become infected once again. 
-This gives us the following system of equations
+This gives us the system of equations
 \begin{align}
-  \frac{d S}{d t} &= - \beta S I\\ 
-  \frac{d I}{d t} &= \beta S I - \gamma I\\
+  \frac{d S}{d t} &= - \beta S I,\\ 
+  \frac{d I}{d t} &= \beta S I - \gamma I,\\
   \frac{d R}{d t} &= \gamma I,
 \end{align}
-where here $\beta$ is an effective infectious contact rate, $\gamma$ is a recovery rate. 
-
+where $\beta$ is an effective infectious contact rate, $\gamma$ is a recovery rate. 
 This form of the model lends itself to a couple of analyses which will become important as we extend these models to more complicated infection dynamics.
 
 \paragraph{Effective reproduction number}%
 
-The first is the effective reproduction number $R(t)$. 
-We can see that when $R_{t} = \beta S(t) / \gamma > 1$, the number of infected individuals will be increasing $\frac{dI}{dt} > 0$. 
-This quantity $R_{t}$ controls the direction of the epidemic.
+An important quantity that is derived from epidemic models is the effective reproduction number $R_t$. 
+We can see that when $R_{t} = \beta S(t) / \gamma > 1$, the number of infected individuals will be increasing i.e. $\frac{dI}{dt} > 0$. 
+This effective reproduction $R_{t}$ controls the direction of the epidemic and reflects the average number of secondary infections caused by a single infection.
 In the special case where the population is fully susceptible ($S(t) = 1$), this quantity is called the basic reproduction number $R_{0}$, and it is interpreted as the average number of secondary infections caused by a single individual in an otherwise completely susceptible (naive) population.
 
 % \paragraph{Infectious period}
@@ -135,49 +134,48 @@ In the special case where the population is fully susceptible ($S(t) = 1$), this
 \section{Multistrain models}
 
 We'll now dive further into the evolutionary component of these models. 
-In order for evolution to occur, we need a counter-balance of mutation (generating heritable diversity) and selection (differential survival and reproduction based on that diversity).
+In order for evolution to occur, we need a balance of mutation (generating heritable diversity) and selection (differential survival and reproduction based on that diversity).
 
-For the goal of evolutionary forecasting of virus strains, we need to develop a notion of a multistrain model wherein there are different types of infections and in which these differences are heritable and in which there can be selection for different strains.
+For the goal of evolutionary forecasting of virus strains, we need to develop a notion of a multistrain model.
+These models will describes population with different types of infecting strains whose differences are heritable.
+This enables selection for different strains over time.
 
 \paragraph{A two-strain epidemic model}%
 
 %TODO: Edit to remove discussion on generation time unless this props up in the viral sequence section
 
-We first consider one of the most standard ODE-based model for infectious diseases with multiple variants: an SIR model in which there are a wild-type $\text{wt}$ and a variant $\text{var}$. 
+We first consider a standard ODE-based model for infectious diseases with multiple variants: an SIR model in which there are a wild-type $\text{wt}$ and a variant $\text{var}$. 
 We assume that the variant virus can differ in two ways from the wild type: it may differ in innate transmissibility by a factor of $\eta_{T}$, or it may differ in its infectious period by a factor $\eta_{G}$. 
-This gives us the following system of ordinary differential equations:
+This gives us the system of ordinary differential equations
 \begin{align}
     \frac{d S}{d t} &= - \beta S I_{\text{wt}} - \beta \eta_{T} S I_{\text{var}},\\
   \frac{d I_{\text{wt}} }{d t} &= \beta S I_{\text{wt}} - \gamma I_{\text{wt}} = r_{\text{wt}}(t) I_{\text{wt}},\\
   \frac{d I_{\text{var}}}{d t} &= \beta \eta_{T} S I_{\text{var}} - \gamma \eta_{G} I_{\text{var}} = r_{\text{var}}(t) I_{\text{var}}.
 \end{align}
+In this model, we now have two different $R_{0}$ values, $R_{0}^{\text{wt}} = \frac{\beta}{\gamma}$ and $R_{0}^{\text{var}} = \frac{\eta_{T}}{\eta_{G}}R_{0}^{\text{wt}}$.
 
-In this model, we know have two different $R_{0}$ values which are $R_{0}^{\text{wt}} = \frac{\beta}{\gamma}$ and $R_{0}^{\text{var}} = \frac{\eta_{T}}{\eta_{G}}R_{0}^{\text{wt}}$.
-
-Though this model is not appropriate for infectious diseases with non-trivial competition dynamics via strain-specific immunity for example, it gives us an essential result for epidemiological modeling of genetic variants.
+Though this model is not appropriate for infectious diseases with non-trivial competition dynamics via strain-specific immunity for example, it gives us an essential result for epidemiological modeling of genetic variants. %TOD: Cite?
 
 % We see that once again there is a dependence between transmissibility and the timing of infection. 
 % More precisely, we notice that without specifying $\eta_{G}$, the variant transmission advantage is unidentifiable. 
 
 \section{Population genetics, viral fitness, and selection}
 
-As viruses transmit between individuals, they generate genetic variation through mutation, drift, and selection.
+As viruses transmit from individual to individual, they generate genetic variation through mutation, drift, and selection.
 In the context of ordinary differential equations, we've shown that multiple strains can co-circulate and may dominate one another over time.
 However, we still need to develop an understanding of how this co-circulation and transmission affects the underlying population's genetic diversity.
 
 When dealing with pathogens with serial replacement, causing large waves of infection, we're primarily interested in selection. 
-Selection acts as a ``force'' on the genetic diversity of the population favoring particular genetic variants causing the population to evolve in response to particular environmental pressures.
-
-In short,  we can define selection and evolution as:
+Selection acts as a ``force'' on the genetic diversity of the population favoring particular genetic variants and causing the population to evolve in response to particular environmental pressures.
+We'll now define selection and evolution.
 
 \begin{itemize}
-  \item \emph{Selection} is the process by which individuals have higher fitness in certain environments
-  \item \emph{Evolution} is the change in the genetic composition of the population over time due to selection and heritable variation
+  \item \emph{Selection} is the process by which individuals have higher fitness in certain environments.
+  \item \emph{Evolution} is the change in the genetic composition of the population over time due to selection and heritable variation.
 \end{itemize}
 
 Often, we’re interested in not just the presence of selection but its magnitude.
-
-When quantifying selection, you’ll often see selective coefficient or relative fitness discussed.
+When quantifying selection in population genetics, the selective coefficient or relative fitness are often discussed. % TODO: Cite
 In the following section, we'll introduce both these quantities and their relationship to one another. 
 
 Suppose that we have alleles $A$ and $B$ in a population with $x_A$ individuals having allele $A$ and $x_B$ having allele $B$. 
@@ -190,11 +188,10 @@ x_A' \sim \text{Multinomial}\left(N, \frac{W_A x_A}{W_A x_A + W_B x_B}\right),
 \end{equation}
 
 where we've fixed the total number of offspring at $N$.
-Using this, we can write the expected frequency of allele $A$, $p_A = \frac{x_A}{x_A + x_B}$, and its variance as
-
+Using this equation, we can write the expected frequency of allele $A$, $p_A = \frac{x_A}{x_A + x_B}$, and its variance as
 \begin{align}
-  \Expect[p_A'] &= \frac{W_A p_A }{W_A p_A + W_B p_B} = \frac{W_A}{\bar{W}}p_A\\
-  \Var[p_A'] &= \frac{p_A' (1 - p_A')}{N} \label{eq:allele_variance}
+  \Expect[p_A'] &= \frac{W_A p_A }{W_A p_A + W_B p_B} = \frac{W_A}{\bar{W}}p_A,\\
+  \Var[p_A'] &= \frac{p_A' (1 - p_A')}{N} \label{eq:allele_variance},
 \end{align}
 where we have defined the mean fitness $\bar{W} = W_A p_A + W_B p_B$.
 This provides a baseline for how fitness changes under fitness dynamics.
@@ -202,12 +199,12 @@ This provides a baseline for how fitness changes under fitness dynamics.
 %TODO: Note that these are not the only forces of population turnover and discuss drift and effective population size briefly.
 
 %TODO: Specify Haploid population throughout!!
-To measure the magnitude of selection for a particular allele, we can define the selective coefficient $s$ so that the fitness of $A$ is $W_A = (1+s) W_B$ per generation.
+To measure the magnitude of selection for a particular allele, we can define the selection coefficient $s$ so that the fitness of $A$ is $W_A = (1+s) W_B$ per generation.
 Using our earlier derivation, we can write the expected frequency of the variant allele assuming selective advantage $s$ after $n$ generations of length $\tau$ days as
 
-\begin{equation*}
+\begin{equation}
 p_{n\tau} = \frac{(1+s)^{n}p_{0}}{(1+s)^{n}p_{0} + (1 - p_0)}.
-\end{equation*}
+\end{equation}
 
 
 % When dealing with infectious diseases like SARS-CoV-2, we may be interested in selection for two reasons.
@@ -228,47 +225,46 @@ These models often estimate the relative fitness of variants based on changes in
 In exponentially growing populations, we can think about this as the difference between the growth rates.
 
 One model in this vein that has gained popularity for analyzing SARS-CoV-2 variant frequencies and estimating relative fitness is multinomial logistic growth (MLR).
-Assuming that each variant has a fixed relative fitness to all others, we can derive the following model for variant frequencies over time
-\begin{align*}
+Assuming that each variant has a fixed fitness relative to all others, we can derive a model for variant frequencies over time
+\begin{align}
 f_{v}(t) = \frac{p_{v}\exp(r_{v}t)}{\sum_{u} p_{u} \exp(r_{u}t)},
-\end{align*}
+\end{align}
 where $f_{v}$ is the frequency of variant $v$ in the virus population at time $t$.
 Here, $r_{v}$ and $p_{v}$ can be thought of as variant-specific growth rates per day and initial prevalence. 
 Due to the fact that variant frequencies must add to one, $r_{v}$ and $p_{v}$ are not uniquely identifiable for all variants. 
 Therefore, we often instead work with a model of the form
-\begin{align*}
+\begin{align}
 f_{v}(t) = \frac{\exp(\lambda_{v} t + \alpha_{v})}{\sum_{u} \exp(\lambda_{u} t + \alpha_{u})},
-\end{align*}
+\end{align}
 where we've set some variant as a pivot with $\lambda_{\text{pivot}} = \alpha_{\text{pivot}}=0$.
 Using these MLR models, the relative fitness of variant $v$ relative to the pivot is often interpreted as being $\lambda_{v}$.
 
-By introducing the mean generation time $\tau$, we can approximate the relative effective reproduction number of variants as $R_{t}^{v} / R_{t}^{\text{pivot}} = \exp(\beta_{v}\tau)$ which is equivalent to assuming that the generation time distribution is a point mass at $\tau$.
+By introducing the mean generation time $\tau$, we can approximate the relative effective reproduction number of variants as $R_{t}^{v} / R_{t}^{\text{pivot}} = \exp(\beta_{v}\tau)$, which is equivalent to assuming that the generation time distribution is a point mass at $\tau$.
 
 
 % TODO: Update this to exponential growth framing to talk about how selective advantage relates to difference in exponential growth rates
 We can relate this relative fitness model based on exponential growth to our earlier model of selection by noting that $t = n\tau$, so that
 
 $$
-(1 + s)^{t / \tau} = \exp(\lambda_v t) \implies \lambda_v / \tau = \log{(1 + s)} \approx s.
+(1 + s)^{t / \tau} = \exp(\lambda_v t) \implies \lambda_v * \tau = \log{(1 + s)} \approx s.
 $$
 
 This approximation holds for small $s \approx 0$ using a linear approximation of $\log(1+x)$.
-This provides a simple relationship between the traditional selective coefficient $s$ used in population genetics and the relative fitness $\lambda$ that we'll use throughout this dissertation.
+This provides a simple relationship between the traditional selection coefficient $s$ used in population genetics and the relative fitness $\lambda$ that we'll use throughout this dissertation.
 
 \section{Bayesian inference}%
 
 For this general project of relating epidemic dynamics and population genetics, we need to take these models and connect them to what is observed or observable for statistical analysis.
 In our case, we rely primarily on Bayesian inference methods.
-We'll shortly review several features of Bayesian inference which are useful for this kind of modeling.
+We'll shortly review several features of Bayesian inference that are useful for this kind of modeling.
 
 In short, Bayesian inference is focused on the properties of the joint probability distribution  $p(\vec{x}, \vec{\theta})$ of data $\vec{x}$ and parameters $\vec{\theta}$ under a given model $m$.
 
 \paragraph{Posterior distribution.}
 Given a model and data, we can provide estimates of a possible distribution of parameters conditional on observed data using Bayes rule
-\begin{align*}
+\begin{align}
 p(\vec{\theta} \mid \vec{x}) = \frac{p(\vec{x} \mid \vec{\theta})\cdot p(\vec{\theta})}{\int p(\vec{x} \mid \vec{\theta}') p(\vec{\theta}') d \vec{\theta}'}.
-\end{align*}
-
+\end{align}
 This distribution is called the \emph{posterior distribution of $\theta$ under model $m$}.
 Notice, this distribution depends on both the likelihood of the data given the model parameters $\vec{\theta}$ $p(\vec{x} \mid \vec{\theta})$ and the prior probability of the parameters $p(\vec{\theta})$ before observing data.
 These priors are often set as a part of model building and can be useful for regularization, smoothing, and modeling data hierarchically.
@@ -278,9 +274,9 @@ These priors are often set as a part of model building and can be useful for reg
 Most often, we approximate this distribution using samples from the posterior distribution using methods like Markov Chain Monte Carlo or Variational Inference.
 
 These samples allow us to get expectations of function under the posterior distribution, so that we can compute
-\begin{align*}
+\begin{align}
 \Expect_{p(\vec{\theta} \mid \vec{x})}[f(\vec{\theta})] = \int_{\Theta} f(\vec{\theta}) p(\vec{\theta} \mid \vec{x}) d \vec{\theta}.
-\end{align*}
+\end{align}
 
 These expectations can be used to compute the probability of events under the posterior distribution including distributions for missing or future data.
 
@@ -318,54 +314,51 @@ Importantly, the purpose of these classifications is to provide meaningful categ
 
 Variant assignment relies on minimizing the variability within each variant for the selected phenotypic metric $G(x)$.
 This process can be understood as minimizing the within-variant sum of squares (WCSS), which measures how close the sequences within each variant are to the variant’s average trait value.
-For a set of variants \( \{V_1, V_2, \dots, V_K\} \), the WCSS is given by:
+For a set of variants \( \{V_1, V_2, \dots, V_K\} \), the WCSS is given by
 
-\begin{align*}
+\begin{align}
 \text{WCSS} &= \sum_{k=1}^{K} \sum_{x \in V_{k}} (G(x) - \mu_{V_k})^2\\
             &= \sum_{k=1}^{K} \abs{V_k} \Var_{x \sim V_k}[G(x)]
-\end{align*}
-
+\end{align}
 where $\mu_V$ is the centroid of variant metric, representing the average value of the metric for sequences in that variant.
 
 Minimizing WCSS ensures that the variance within each variant is as small as possible, meaning that sequences within a variant are phenotypically similar.
 This reduction of genetic diversity into variants can provide a simplified representation of viral populations, facilitating analysis while retaining the critical biological differences needed to understand viral dynamics.
 It is important to note that minimizing phenotypic variance within a cluster does not necessarily mean that sequences form a proper clade.
-In practice, we want may want to additionally evolutionarily meaningful clades that also minimize phenotype variance.
+In practice, we may want to produce evolutionarily meaningful clades that also minimize phenotype variance.
 
 \paragraph{Simplifying Population-Level Expectations Using Variants}
 
 One of the key advantages of variant assignment is that it simplifies population-level questions, such as estimating the average fitness or transmissibility of the population. 
 Directly analyzing every sequence in the population is computationally impractical, particularly as viral diversity grows. Assigning sequences to variants allows us to approximate population-level statistics using variant-level summaries.
 
-For example, to estimate the expected value of a phenotypic trait $G(x)$ (such as fitness) across the population, the exact expectation is given by:
+For example, to estimate the expected value of a phenotypic trait $G(x)$ (such as fitness) across the population, the exact expectation is given by
 
 \begin{equation}
   \Expect_{X_t}[G] = \int_{\mathcal{X}} G(x) p_{X_{t}}(x) dx,
 \end{equation}
-
 where $p_{X_t}(x)$ is the probability density of sequences at time $t$.
 
 By assigning sequences to variants, we can approximate this expectation using variant frequencies $f_{v}(t)$ and an estimate of average trait value $\overline{G}_{v}$ within variant $v$.
 The average trait value approximates $\Expect_{X_t \mid V=v}[G]$ and can be estimated with a statistical model or taken from sample averages.
-This gives us the following approximation for the expected phenotype across the population:
-
+This gives us an approximation
 \begin{equation}
   \Expect_{X_t}[G] \approx \sum_{u} f_{u}(t) \overline{G}_u,
 \end{equation}
-
-which reduces a potentially complex integral into a weighted sum of variant means.
+for the expected phenotype across the population, which reduces a potentially complex integral into a weighted sum of variant means.
 This allows us to get estimates and expectations of phenotype without sequence-level phenotype predictions or a generative sequence model $p_{X_t}(x)$, instead we operate at the level of variant.
 
 \paragraph{Error Bounds and Limitations}
 
 How well this approximation works depends on how similar the sequences within the variant are with respect to the trait $G$. 
 
-We can see this by developing a bound on the error of this approximation
+We can see this by developing a bound 
 
-\begin{align*}
+\begin{align}
   \epsilon &= \abs{\Expect_{X_t}[G]  - \sum_{u} \overline{G}_u f_{u}(t)}^2\\ 
-           &= \abs{\sum_{u=1}^{K} (\Expect_{X_{t} \mid V=u}[G] - \overline{G}_u) f_u(t)}^2
-\end{align*}
+           &= \abs{\sum_{u=1}^{K} (\Expect_{X_{t} \mid V=u}[G] - \overline{G}_u) f_u(t)}^2,
+\end{align}
+on the error of this approximation.
 
 We can introduce a per-variant mean squared error as 
 \begin{align}
@@ -382,8 +375,9 @@ Using that the probability of each variant is equal to its frequency $f_v(t)$, w
           &= \sum_{u} \epsilon_u f_u(t).
 \end{align}
 
-This shows our approximation is exhibits a bias-variance trade-off, but generally for unbiased estimates will be most accurate when the within-variant variance is minimized, the variants are well-separated in the phenotypic space.
-If the variance of the phenotype within a variant is too large, the mean phenotype within the variant may no longer represent all sequences within the variant.
+This shows our approximation exhibits a bias-variance trade-off.
+For unbiased estimates of the mean variant phenotype, this approximation will be most accurate when the within-variant variance is minimized and the variants are well-separated in the phenotypic space.
+If the variance of the phenotype within a variant is too large, the mean phenotype may no longer represent all sequences within the variant.
 Bounding the error of this approximation, by comparing the variant-level approximation to the exact population-level calculation, provides a deeper understanding of when the simplification works well and when it may fail.
 In practice, reassigning sequences or refining the metric might be necessary to maintain the effectiveness of the variant assignment.
 
