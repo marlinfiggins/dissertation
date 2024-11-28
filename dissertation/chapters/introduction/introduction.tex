@@ -370,7 +370,7 @@ Using that the probability of each variant is equal to its frequency $f_v(t)$, w
 \begin{align}
   \epsilon  &= \abs{\sum_{u} (\Expect_{X_{t} \mid V=u}[G] - \overline{G}_u) f_u(t) }^2\\
             &\leq \underbrace{\left(\sum_{u} f_u(t) \right)}_{=1} \left(\sum_{u}  \underbrace{(\Expect_{X_{t} \mid V=u}[G] - \overline{G}_u)^2}_{\epsilon_u} f_u(t)\right)\\
-          &= \sum_{u} \epsilon_u f_u(t).
+            &\leq \sum_{u} \epsilon_u f_u(t).
 \end{align}
 
 This shows our approximation exhibits a bias-variance trade-off.
