@@ -123,7 +123,7 @@ By isolating the contributions of molecular phenotypes to fitness, this provides
     \includegraphics[width=1.0\textwidth]{./figures/synthetic-spurious-correlations.png}
     \caption{
 	\textbf{Shared evolutionary history causes spurious correlations between predictors and fitness.}
-	A. A phylogenetic tree simulated with fitness-dependent branching.
+	A. A transmission tree simulated with fitness-dependent branching.
 	Each branch represents the evolutionary descent of lineages, where fitness evolves through Brownian motion.
 	B. Naive regression of tip-level fitness on cumulative mutations.
 	This ignores the shared evolutionary history of tips, leading to spurious correlations.
@@ -204,27 +204,20 @@ This suggests these molecular phenotypes may have utility for forecasting the re
 
 \paragraph{Using molecular phenotypes for out-of-sample relative fitness forecasts}
 
-To assess the predictive utility of molecular phenotypes, we implemented a regression-based prior for the relative fitness innovation. This approach enables the prediction of fitness innovations for out-of-sample lineages by leveraging their molecular phenotypes and the lineage-parent relationships described previously.
-With these predicted fitness innovations, we can then forecast relative fitness using the baseline fitness of its parent (Fig.~\ref{fig:predicting-fitness-with-innovations})
+To assess the predictive utility of molecular phenotypes, we implemented a regression prior for the relative fitness innovation. This approach enables the prediction of fitness innovations for out-of-sample lineages by leveraging their molecular phenotypes and the lineage-parent relationships described previously.
+With these predicted fitness innovations, we can then forecast relative fitness using the baseline fitness of its parent (Fig.~\ref{fig:predicting-fitness-with-innovations}C).
 
-% TODO: Within sample validation
+We validate that the regression prior fitness model estimates relative fitnesses that are consistent with the relative fitness in the uninformed model (Fig.~\ref{fig:predicting-fitness-with-innovations}A), finding near perfect alignment between the two models ($R^2 = 1.0$).
+This suggests that our regression prior fitness model is able to capture both the effect of predictors and estimate the residual between our predictions.
 
-% TODO: Outside sample validation
+We then sought to validate this model using its predictions for previously unseen variants.
+We repeat the same relative fitness analysis, estimating relative fitness using the normal prior model for the 6 months following the end of the original XBB.1.5 data set.
+Using all lineages for which we have available phenotypes but were not included in the original data set, we predict their fitness and compare it to the estimated relative fitness in the future data set (Fig.~\ref{fig:predicting-fitness-with-innovations}B).
+Our forecasted relative fitness align closely with the future relative fitness though they differ in scale, and we find that our predictions explain a large share of the variance ($R^2 = 0.67$) in future relative fitness and are strongly positive correlated (Spearman's $\rho=0.72$).
+This result highlights the ability of the regression-based fitness model to generalize fitness predictions beyond the training set, effectively utilizing molecular phenotypes as predictors.
 
-% Figure~\ref{fig:forecasting-validation}A shows the predicted versus observed fitness innovations for lineages not included in the initial regression model. The predictions align closely with the observed values, demonstrating strong forecasting accuracy with an $R^2$ of 0.72. This result highlights the ability of the regression-based prior to generalize fitness predictions beyond the training set, effectively utilizing molecular phenotypes as predictors.
-%
-% \paragraph{Validation against observed clade dynamics}
-%
-% To validate these predictions, we compared the model’s forecasts with observed changes in clade frequencies over time. By aggregating lineage-level predictions to the clade level, we assessed whether the predicted fitness innovations corresponded to observed clade dynamics. Figure~\ref{fig:forecasting-validation}B illustrates the temporal evolution of clade frequencies, with predicted fitness innovations closely tracking the observed growth trajectories of dominant clades such as 23F (EG.5.1) and 24A (JN.1).
-%
-% These results confirm that the regression-based innovation framework captures key adaptive events driving clade success. Clades with positive fitness innovations showed consistent increases in frequency, while those with negative innovations declined or remained stable. This validation against empirical dynamics demonstrates the robustness of the framework for forecasting evolutionary trajectories.
-
-The ability to predict fitness innovations for previously unseen lineages provides a critical tool for evolutionary forecasting.
+The ability to predict fitness for previously unseen lineages provides a critical tool for evolutionary forecasting.
 By combining molecular phenotypes with the innovation framework, this approach offers a scalable solution for anticipating the success of novel variants in real-time.
-
-% The results presented here highlight the utility of molecular phenotypes and the innovation framework for quantifying and forecasting SARS-CoV-2 fitness innovations.
-% This approach is a powerful tool for understanding adaptation and anticipating the potential of emerging variants.
-% The implications of these findings, their limitations, and their potential applications to future variant surveillance are explored in the following discussion.
 
 \begin{figure}[h]
 	\centering
@@ -233,27 +226,12 @@ By combining molecular phenotypes with the innovation framework, this approach o
 	    A. In-sample validation comparing predicted relative fitness innovations with their estimated values.
 	    Predictions were generated using the regression-based prior, incorporating molecular phenotypes as predictors.
 	    Points represent individual lineages, with the diagonal dashed line indicating perfect agreement between predicted and estimated values.
-	    % The high $R^2$ value demonstrates strong internal consistency, validating the model’s ability to accurately predict fitness innovations for lineages included in the training dataset.
 	    B. Out-of-sample validation comparing predicted relative fitness innovations with observed values for lineages not included in the training dataset.
-	    % Predictions leverage molecular phenotypes and parent-child relationships to estimate fitness innovations for unseen lineages.
-	    % Points represent individual lineages, with the diagonal dashed line indicating perfect agreement. The model achieves an $R^2 = 0.72$, demonstrating robust generalizability to lineages outside the training set.
-	    C. Sorted list of lineages with the highest predicted fitness innovations.
-	    Lineages are ranked by their predicted relative fitness innovations.
-	    % The top-ranking lineages predominantly include descendants of XBB.1.5, with molecular phenotypes suggesting strong immune escape or ACE2 binding affinity. This analysis illustrates the potential of the model to identify high-fitness variants and inform surveillance efforts.
+	    C. Predicted relative fitness of top 25 lineages.
+	    D. Relative fitness lineages achieving at least 2\% frequency, relative fitnesses are estimated with data from the 6 months following training period.
 	}
 	\label{fig:predicting-fitness-with-innovations}
 \end{figure}
-
-% \begin{figure}[h]
-% 	\centering
-% 	\includegraphics[width=1.0\textwidth]{./figures/binding-escape-score-growth-advantage-innovations.png}
-% 	\caption{\textbf{Correlation between changes in ACE-2 binding, immune escape and MLR growth advantage.}
-%         A. Correlating log(growth advantage innovation) and change in ACE-2 binding. 
-%         B. Correlating SOMETHING and change in immune escape.
-%         C. Comparing predicted growth advantage from multiple regression to estimated growth advantage from innovation MLR model.
-% 	}
-% 	\label{fig:binding-escape-score-growth-advantage-innovations}
-% \end{figure}
 
 \section{Discussion}
 
@@ -288,31 +266,11 @@ By showing the utility of these phenotypes for predicting fitness and enabling o
 While focused on SARS-CoV-2, the framework can be adapted to study other rapidly evolving pathogens, extending its relevance beyond the current pandemic.
 These contributions provide a foundation for advancing long-term evolutionary forecasting and guiding proactive responses to pathogen evolution.
 
-% TODO: However this is still a need to update the calculator
-
-% TODO: Epistatis complicates things, might suggest that we need to update phenotype computation
-
-
-% TODO: However the method remains!
-
-% Our approach bridges mechanistic insights into viral evolution with actionable predictions. 
-% Our results show that molecular phenotypes are useful for predicting relative fitness and can enable out-of-sample prediction.
-% This ability to forecast fitness for unseen variants offers a practical tool for real-time monitoring of emerging variants and potentially vaccine strain selection.
-
-
-% The ability to predict relative fitness for unseen lineages represents a significant advancement in evolutionary forecasting.
-% This work demonstrates that molecular phenotypes are not only interpretable but also actionable predictors, offering a practical framework for anticipating the emergence of high-fitness variants.
-% This approach bridges the gap between mechanistic insights into viral evolution and forecasting tools for public health.
-
-% This approach also depends on the availability and accuracy of deep mutational scanning data.
-% If the human sera used in these experimental approaches are not available or reflective of the population of interest, predictors of immune escape may not properly reflect escape risk within our population.
-
-
 \section{Methods}
 
-\paragraph{Simulation of Phylogenetic Trees with Fitness-Weighted Offspring}%
+\paragraph{Simulation of transmission trees with fitness-weighted offspring}%
 
-To investigate how evolutionary history influences correlations between molecular phenotypes and fitness, we simulated phylogenetic trees using a discrete-generation model.
+To investigate how evolutionary history influences correlations between molecular phenotypes and fitness, we simulated transmission trees using a discrete-generation model.
 Each tree begins with a single ancestral lineage at generation 0, initialized with fitness $\lambda_0$.
 At each generation $t$, the total number of offspring $O_{t}$ is sampled from a Poisson distribution with mean $bar{N}_t$.
 These offspring are then distributed among active lineages $i$ are allocated using a multinomial draw based on fitness-weighted probabilities, so that the offspring by lineage are given by:
