@@ -497,7 +497,7 @@ The emphasis is on assessing the performance of statistical models and the impor
 \noindent\textbf{Key contributions}:
 \begin{itemize}
         \item Development of a framework and pipeline for evaluating MLR models and other fitness-based models in the context of short-term forecasting, focusing on forecast accuracy and reliability.
-        \item Demonstrates the limitations of statistical models when they do not account for detailed transmission and immunity dynamics, emphasizing the need for more comprehensive approaches.
+        \item Shows the limitations of statistical models for longer-term forecasts, emphasizing the need for more comprehensive approaches.
         \item Identifies the role of data quality and sequencing capacity in enabling accurate forecasts, suggesting that a minimum of 1,000 sequences per week is necessary for reliable short-term predictions.
         \item Sets the stage for models in later chapters that will integrate external data to improve forecast reliability by better capturing transmission mechanisms and immune escape.
 \end{itemize}
@@ -507,14 +507,14 @@ This chapter provides a rigorous evaluation of fitness-based forecasting models 
 \paragraph{Chapter 4: Frequency dynamics predict viral fitness, antigenic relationships and epidemic growth}
 
 Building on the insights from Chapters 2 and 3, this chapter develops a comprehensive framework that combines epidemiological theory and population genetics to estimate time-varying relative fitness.
-This chapter introduces several important innovations, including the selective pressure metric, a latent factor model, and a focus on immune escape as a critical factor for predicting viral evolution.
+This chapter introduces several important innovations, including the selective pressure metric, a latent factor model, and a focus on immune escape as a critical factor for explaining fitness dynamics and viral evolution.
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
-  \item Development of a Gaussian Process model for estimating time-varying relative fitness, tracking how variants evolve in response to population immunity.
+  \item Development of a Gaussian Process model for estimating time-varying relative fitness, tracking how variants evolve in real-time regardless of underlying mechanism.
   \item The introduction of a selective pressure metric, which predicts epidemic growth rates without the need for case data, based solely on genetic data.
   \item Development of the latent factor model, which constructs a pseudo-antigenic space, allowing for comparisons of immunity differences between populations and informing forecasts about antigenic evolution.
-  \item Demonstrates the utility of the selective pressure metric for early detection of variants with higher fitness, improving the ability to intervene before they dominate epidemiologically.
+  \item Demonstrates the utility of the selective pressure metric for early detection of variant growth, improving the ability to intervene before they dominate epidemiologically.
 \end{itemize}
 
 This chapter provides a deeper understanding of how transmission mechanisms and immune escape influence viral evolution, offering critical insights for improving the forecasting of variant success.
@@ -529,7 +529,7 @@ By leveraging deep mutational scanning data, these models provide a mechanism-in
   \item Development of a framework that integrates molecular phenotype data with fitness innovations to quantify and predict lineage success.
   \item Introduction of a regression-based prior to enable out-of-sample forecasting of relative fitness for unseen variants, extending models introduced in earlier chapters.
   \item Demonstration that immune escape is the dominant phenotypic driver of fitness, while transmissibility-related traits such as ACE2 binding affinity and RBD expression also contribute.
-  % \item Validation of the framework’s predictive accuracy and scalability, highlighting its potential for real-time monitoring and broader application to other rapidly evolving pathogens.
+  \item Validation of the framework’s predictive accuracy, highlighting its potential for real-time monitoring and broader application to other rapidly evolving pathogens.
 \end{itemize}
 
 This chapter advances the field by providing a scalable, data-driven framework that combines molecular phenotypes with evolutionary modeling to improve forecasting of lineage success.
@@ -555,5 +555,4 @@ It highlights how the development of data-driven and mechanism-informed models s
 
 We summarize how the work in this dissertation advances viral forecasting by developing models that integrate epidemiological data, population genetics, and Bayesian inference.
 Next, we propose future research directions, including the integration of external data sources to refine and evaluate forecasting models, the application of these models to other viral families, and the development of generative sequence models for evolutionary forecasting.
-This concludes the dissertation by offering a vision for the evolutionary forecasting of viruses.
-
+This concludes the dissertation by offering a vision for the future of evolutionary forecasting of viruses.
