@@ -15,11 +15,11 @@ Having infrastructure for building, applying, and interpreting models allows us 
 
 %TODO: Expand on what it means to operationalize
 
-\evofr\ consolidates and expands on the methods developed in this dissertation, enabling reproducible data analysis within a modular structure that allows rapid testing and comparison between models %TODO: Reframe.
+\evofr\ consolidates and expands on the methods developed in this dissertation, enabling reproducible data analysis within a modular structure that allows rapid testing and comparison between models. %TODO: Reframe.
 This package serves as the computational backbone for the analyses presented in this dissertation, integrating models from statistical tracking to mechanistic forecasting and is the bridge between the theoretical insights developed in this dissertation and their practical utility as an open-source tool. 
 
 \forecastsNcov\ incorporates \evofr\ into an automated workflow and public-facing platform, translating research and applied forecasts into actionable insights for public consumption.
-It continually retrieves publicly available sequence data to generate and visualize forecasts of SARS-CoV-2 variant frequencies for public consumption, providing forward-looking approach to the evolution of SARS-CoV-2 as a companion to Nextstrain \cite{Hadfield2018}.
+It continually retrieves publicly available sequence data to generate and visualize forecasts of SARS-CoV-2 variant frequencies for public consumption, providing forward-looking approach to the evolution of SARS-CoV-2 as a companion to Nextstrain. \cite{Hadfield2018}
 In this way, \forecastsNcov\ serves as first step to operationalized evolutionary forecasting in practice and at scale.
 
 Together, these software tools provide a basis for evolutionary forecasts as a dynamic process and concrete problem, setting the stage for continued development of this practice and scientifically-informed forecasts of pathogen evolution.
@@ -29,7 +29,8 @@ Together, these software tools provide a basis for evolutionary forecasts as a d
 Evolutionary forecasting plays a critical role in understanding genetic changes in populations over time, with direct applications in predicting the prevalence of infectious disease variants, guiding vaccine development, and informing public health interventions.
 
 Existing tools for understanding evolution often operate at the level of phylogenetic tree estimation which is computationally expensive due to the large number of possible trees (which grows super-exponentially in terms of the number of samples).
-Further, these methods have shown difficulty scaling to large numbers of sequences ($>$ 100,000) and can lack the flexibility to integrate diverse data sources, employ customizable models, or generate interpretable visualizations. %TODO: Cite
+Further, these methods have shown difficulty scaling to large numbers of sequences, requiring approximation-based methods at the pandemic scale. \cite{DeMaio2023}
+Additionally, due to these large computational demands, it can be difficult to iterate on these methods, making model development, testing, and iteration time-consuming.
 In general, these methods are typically employed for historical analyses, capturing past or currents trends in evolution without much concern for likely future population change.
 That being said, there is no need to completely replace phylogenetic analysis as it still forms an important backbone for our understanding of pathogen evolution and enables us to group continuous genetic diversity in pathogen populations to variant groupings that are evolutionarily meaningful.
 %TODO: What do I cite here.
@@ -65,8 +66,6 @@ As an example, this enables easily swapping between different models such as sta
 These models can then be fit with any of the inference methods in \texttt{evofr.infer} such as Markov Chain Monte Carlo (MCMC), Stochastic Variational Inference (SVI), and maximum a posteriori (MAP) estimation.
 The results of these models are stored in a standardized \texttt{evofr.posterior} object which is compatible with the various plotting methods stored in \texttt{evofr.plotting}.
 
-% TODO: Mention that models can have multiple backends though most methods are implemented within numpyro
-
 \paragraph{Reproducibility}
 
 %TODO: Deterministic workflows, documentation, standardized outputs
@@ -81,9 +80,9 @@ This ensures that results can be reliably reproduced and shared.
 \paragraph{Extensibility}
 
 Users can extend \evofr\ by adding new models, likelihoods, or priors to the models module by developing a class that inherits from \texttt{evofr.ModelSpec}.
-The package’s backend-agnostic design ensures compatibility with diverse computational frameworks (e.g., JAX, PyMC, NumPyro) since users can simply provide a log-posterior probability function for their model to enable samplng or optimization via \evofr's inference methods.
+The package’s backend-agnostic design ensures compatibility with diverse computational frameworks (e.g., JAX, PyMC, NumPyro) since users can simply provide a log-posterior probability function for their model to enable samplng or optimization via \evofr's inference methods. \cite{jax2018github, AbrilPla2023, phan2019composable}
 
-The plotting module (\texttt{evofr.plotting}) is built on top of matplotlib, but can be customized or replaced to accommodate specific visualization needs, such as alternative plot styles or integration with external tools.
+The plotting module (\texttt{evofr.plotting}) is built on top of matplotlib, but can be customized or replaced to accommodate specific visualization needs, such as alternative plot styles or integration with external tools. \cite{Hunter2007}
 
 Generally, the open-source nature of \evofr\ encourages contributions, enabling the tool to evolve with user-driven innovations.
 
@@ -151,13 +150,13 @@ Its documentation can be found at \href{https://blab.github.io/evofr}{https://bl
 
 
 \forecastsNcov\ is an automated platform designed to provide real-time forecasts of SARS-CoV-2 variant frequencies.
-As part of the broader Nextstrain project, it extends Nextstrain’s genomic surveillance capabilities by offering a forward-looking perspective.
+As part of the broader Nextstrain project, it extends Nextstrain’s genomic surveillance capabilities by offering a forward-looking perspective. \cite{Hadfield2018}
 While Nextstrain’s phylogenetic inference provides detailed reconstructions of evolutionary histories, \forecastsNcov\ complements this by projecting future variant trajectories.
 This dual approach ensures a comprehensive understanding of variant dynamics, bridging retrospective insights with predictive capabilities.
 
 This tool operationalizes evolutionary forecasting, translating genomic data into actionable insights for public health.
 Its automated workflows, robust modeling framework, and accessible visualization tools make it an essential resource for addressing rapidly evolving public health challenges.
-By enabling real-time forecasting, \forecastsNcov\ supports early detection of emerging threats, timely policy decisions, and informed vaccine updates.
+By enabling real-time forecasting, \forecastsNcov\ can support early detection of emerging threats, timely policy decisions, and informed vaccine updates.
 
 % \forecastsNcov\ is an automated workflow that processes SARS-CoV-2 sequence data, processes these into a sharable format, applies \evofr’s forecasting models, and visualizes their results in a web interface, providing real-time insights into SARS-CoV-2 variant dynamics.
 % \forecastsNcov\ uses publicly submitted genomic data, to produce variant frequency forecasts and variant-specific growth advantages to monitor and nowcast SARS-CoV-2 variant dynamics, directly complementing Nextstrain’s phylogenetic analyses by adding predictive, forward-looking insights.
@@ -172,7 +171,7 @@ By enabling real-time forecasting, \forecastsNcov\ supports early detection of e
 % TODO: Why it's useful for these things to be integrated 
 \subsection{Design and workflow}
 
-The forecasts-ncov pipeline integrates data ingestion, predictive modeling, and visualization into a seamless, automated workflow.
+The \forecastsNcov\ pipeline integrates data ingestion, predictive modeling, and visualization into a seamless, automated workflow.
 It is designed to operate at scale, updating forecasts daily to provide consistent and timely insights.
 
 % This is where we discuss automated sequence count generation, the workflow for country-level fitness at multiple levels of genetic variation.
@@ -197,50 +196,22 @@ These visualizations provide intuitive representations of complex genomic data, 
 As a component of Nextstrain, \forecastsNcov fills a critical gap by adding predictive capabilities to the platform’s established phylogenetic tools.
 It provides continuously updated forecasts that enable users to anticipate the trajectories of SARS-CoV-2 variants (Figs \ref{fig:fn_clade_frequencies} and \ref{fig:fn_lineage_frequencies})  as well as visualize the current growth advantages of variants at the level of Nextstrain clade and Pango lineage (Figs \ref{fig:fn_clade_growth_advantages} and Figs \ref{fig:fn_lineage_growth_advantages}).
 
-%TODO: Add figures here!
-
 This forward-looking approach complements the retrospective focus of phylogenetic inference, creating a comprehensive framework for understanding both past and future variant dynamics.
 
-By automating the forecasting process, forecasts-ncov ensures the timely availability of results, which are stored as public JSON files on AWS S3.
+By automating the forecasting process, \forecastsNcov ensures the timely availability of results, which are stored publicly as JSON files on AWS S3.
 These outputs are stratified by data provenance (e.g., GISAID, GenBank), variant classification (e.g., Nextstrain clades, Pango lineages), and geographic resolution (e.g., global, USA).
 The integration of these outputs with an interactive web application further enhances their accessibility, enabling users to visualize variant trends dynamically.
 This functionality supports public health efforts by providing actionable insights that inform decision-making at local, national, and global levels.
 
 \subsection{Discussion}
 
-% \forecastsNcov\ enhances Nextstrain’s phylogenetic tools by integrating real-time forecasting with phylogenetic data, enabling a comprehensive understanding of how variants evolve over time and how they will continue to spread.
-% This integration allows for both historical insights (via phylogenetic trees) and future predictions (via growth advantage estimates), providing a full picture of viral evolution that is critical for public health planning.
-% By combining these aspects, \forecastsNcov\ helps shift the focus from just visualizing genetic diversity to actively forecasting the future trajectory of variants.
-% Real-Time Forecasting as a Public Health Tool: The platform is invaluable for real-time applications such as identifying emerging variants of concern and predicting potential waves of infection. The forward-looking predictions provided by \forecastsNcov\ directly support policy decisions regarding resource allocation and vaccination strategy.
-% It enhances Nextstrain’s real-time utility, allowing public health experts to anticipate the emergence of variants rather than just track them after the fact.
-% Archival Nature of Forecasts: \forecastsNcov’s ability to archive forecasts and model assumptions adds value beyond real-time decision-making. These archives serve as a record of evolutionary forecasting, providing a resource for retrospective analysis and methodological refinement.
-%
-% Public health officials and researchers can use archived forecasts to evaluate the accuracy of predictions, test new forecasting methodologies, and refine the models used in future outbreaks.
-% Scientific Advancement: By integrating real-time forecasting with phylogenetic analysis, \forecastsNcov\ supports the advancement of evolutionary forecasting science. It enables researchers to test evolutionary hypotheses, evaluate model performance, and improve forecasting accuracy over time.
-% Scientific and Public Health Impact: 
-%
-% Public Health Preparedness: \forecastsNcov\ positions itself as a critical tool in pandemic preparedness, offering predictions that help guide interventions while providing a historical record that can inform future responses.
-% Future Directions:
-% Expansion to Other Pathogens: \forecastsNcov\ can be extended to other pathogens, such as influenza or bacterial infections, with modifications to handle different genomic structures and epidemiological dynamics.
-% Data Stream Integration:
-% Integrate additional data streams, such as behavioral data or environmental factors, to improve forecasting capabilities beyond genomic and case data.
-% Enhanced Visualization and User Access:
-% Further develop user-friendly interfaces and interactive tools to make forecasting results more accessible to non-expert users and public health officials.
-%
-% Archival Value Emphasized: The discussion of how \forecastsNcov\ archives forecasts and model assumptions provides significant value, especially for retrospective analysis, refinement of methodologies, and fostering transparency in public health forecasting.
-% Broader Pathogen Applications: The outline now highlights the platform’s adaptability and potential for use with other pathogens, expanding the applicability of \forecastsNcov\ to global health challenges beyond SARS-CoV-2.
-% Integration with Real-Time Public Health Efforts: It clearly links the platform’s outputs to actionable public health strategies, helping to bridge the gap between data-driven forecasts and real-world decision-making.
-%
-
-%TODO: Read through this thoroughly and make sure it fits the vision
-% Incorporate ideas from above
 \forecastsNcov\ represents a significant advancement in operationalizing evolutionary forecasting, combining the predictive modeling framework of \evofr with Nextstrain’s robust infrastructure for genomic surveillance.
 By automating the end-to-end process—from data ingestion to real-time forecast visualization—the platform offers a forward-looking complement to the phylogenetic analyses that form the foundation of Nextstrain.
 This dual approach provides a more comprehensive understanding of variant dynamics, addressing both retrospective and prospective dimensions of pathogen evolution.
 
 The platform’s success lies in its ability to integrate predictive models seamlessly into a scalable pipeline that produces actionable outputs.
 These forecasts have proven particularly valuable for tracking SARS-CoV-2 variants, enabling public health agencies to anticipate potential surges and prioritize interventions.
-By presenting outputs through intuitive visualizations and accessible data formats, forecasts-ncov democratizes access to evolutionary insights, fostering collaboration among researchers, public health professionals, and policymakers.
+By presenting outputs through intuitive visualizations and accessible data formats, \forecastsNcov\ democratizes access to evolutionary insights, fostering collaboration among researchers, public health professionals, and policymakers.
 
 However, real-time forecasting brings unique challenges that merit consideration.
 The reliance on external data sources, such as GISAID and GenBank, introduces dependencies that can affect the timeliness and consistency of updates.
@@ -249,16 +220,14 @@ While the platform’s modular design supports customization and iteration to ad
 
 Another area of consideration is the interpretability of forecasts.
 While visualizations simplify complex data, conveying the uncertainties inherent in predictive models remains challenging, particularly for non-technical audiences.
-Enhancing these aspects would strengthen forecasts-ncov as a tool for decision-making, ensuring that forecasts are not only accessible but also actionable.
+Enhancing these aspects would strengthen \forecastsNcov\ as a tool for decision-making, ensuring that forecasts are not only accessible but also actionable.
 
-Looking ahead, the scalability and extensibility of \forecastsNcov provide a strong foundation for future growth.
+Looking ahead, the scalability and extensibility of \forecastsNcov\ provide a strong foundation for future growth.
 The platform is well-positioned to expand its scope to other pathogens, offering similar predictive capabilities for influenza, RSV, and other emerging threats.
 Further development of its visualization tools could enable deeper engagement with forecast data, while continued integration with Nextstrain’s ecosystem would create an increasingly unified platform for genomic epidemiology.
 
-Ultimately, forecasts-ncov exemplifies the potential of evolutionary forecasting to move beyond research applications and into the realm of real-world impact.
+Ultimately, \forecastsNcov\ exemplifies the potential of evolutionary forecasting to move beyond research applications and into the realm of real-world impact.
 By providing timely and actionable insights, the platform underscores the value of combining computational innovation with public health priorities, setting the stage for further advancements in genomic surveillance and predictive modeling.
-
-%TODO: Many of these are really contributions. We should use discussion to talk about the potential here.
 
 \subsection*{Code availability}
 
