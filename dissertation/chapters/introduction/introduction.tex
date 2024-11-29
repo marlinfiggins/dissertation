@@ -3,14 +3,13 @@
 The emergence of SARS-CoV-2, the virus behind COVID-19, has drastically changed our world, affecting health, economies, and daily life. 
 First identified in late 2019, this virus quickly spread globally, triggering a pandemic that has impacted millions.
 
-%TODO: Add discussion on recurrent waves
-Following the end of the pandemic, there have been multiple infection waves caused by seasonality in transmission as well as evolution of novel SARS-CoV-2 variants that can evade existing immune responses in individuals with past exposure.
+The pandemic had been characterized by recurrent waves of infection, driven by genetic variants such as the Alpha, Beta, Delta, and Omicron variants. \cite{tegally2021detection, Volz2021, vohringer2021genomic, Earnest2021}
 
-%TODO: Cite various papers mentioned throughout on individual variant waves.
+Even following the end of the pandemic, there have been multiple infection waves caused by seasonality in transmission as well as evolution of novel SARS-CoV-2 variants that can evade existing immune responses in individuals with past exposure. 
 
 Immune escape driven by antigenic evolution has motivated annual updates to the COVID-19 vaccine to better protect individuals with weakened immune systems and those without past or recent exposure.
 
-Evolution in SARS-CoV-2 has produced genetic variants that exhibit strain-specific immune responses in humans as measured through serology, neutralization titers, and deep mutational scanning assays. %TODO: Cite here
+Evolution in SARS-CoV-2 has produced genetic variants that exhibit strain-specific immune responses in humans as measured through serology, neutralization titers, and deep mutational scanning assays. \cite{Bekliz2024, Jian2023, Dadonaite2023, Voss2024}
 
 Therefore, understanding both the virus's evolution and transmission dynamics are crucial for managing the pandemic and crafting effective public health strategies.
 As SARS-CoV-2 continues to spread, the virus will mutate and new variants with unique traits emerge, influencing their transmissibility, severity, and ability to evade immunity.
@@ -154,7 +153,7 @@ This gives us the system of ordinary differential equations
 \end{align}
 In this model, we now have two different $R_{0}$ values, $R_{0}^{\text{wt}} = \frac{\beta}{\gamma}$ and $R_{0}^{\text{var}} = \frac{\eta_{T}}{\eta_{G}}R_{0}^{\text{wt}}$.
 
-Though this model is not appropriate for infectious diseases with non-trivial competition dynamics via strain-specific immunity for example, it gives us an essential result for epidemiological modeling of genetic variants. %TOD: Cite?
+Though this model is not appropriate for infectious diseases with non-trivial competition dynamics via strain-specific immunity for example, it gives us an essential result for epidemiological modeling of genetic variants. \cite{Gog2002} %TOD: Cite?
 
 % We see that once again there is a dependence between transmissibility and the timing of infection. 
 % More precisely, we notice that without specifying $\eta_{G}$, the variant transmission advantage is unidentifiable. 
@@ -175,11 +174,11 @@ We'll now define selection and evolution.
 \end{itemize}
 
 Often, we’re interested in not just the presence of selection but its magnitude.
-When quantifying selection in population genetics, the selective coefficient or relative fitness are often discussed. % TODO: Cite
+When quantifying selection in population genetics, the selective coefficient or relative fitness are often discussed.
 In the following section, we'll introduce both these quantities and their relationship to one another. 
 
 Suppose that we have alleles $A$ and $B$ in a population with $x_A$ individuals having allele $A$ and $x_B$ having allele $B$. 
-We assume that individuals with alleles $A$ and $B$ produce on average $W_A$ and $W_B$ offspring resepectively.
+We assume that individuals with alleles $A$ and $B$ produce on average $W_A$ and $W_B$ offspring respectively.
 These $W_A$ and $W_B$ are the Wrightian fitness of these alleles.
 Assuming that the number of offspring has Poisson distribution with means $W_A$ and $W_B$ respectively, we can write the count of offspring with allele $A$ in the next generation $x_A'$ as
 
@@ -196,9 +195,6 @@ Using this equation, we can write the expected frequency of allele $A$, $p_A = \
 where we have defined the mean fitness $\bar{W} = W_A p_A + W_B p_B$.
 This provides a baseline for how fitness changes under fitness dynamics.
 
-%TODO: Note that these are not the only forces of population turnover and discuss drift and effective population size briefly.
-
-%TODO: Specify Haploid population throughout!!
 To measure the magnitude of selection for a particular allele, we can define the selection coefficient $s$ so that the fitness of $A$ is $W_A = (1+s) W_B$ per generation.
 Using our earlier derivation, we can write the expected frequency of the variant allele assuming selective advantage $s$ after $n$ generations of length $\tau$ days as
 
@@ -241,12 +237,10 @@ Using these MLR models, the relative fitness of variant $v$ relative to the pivo
 
 By introducing the mean generation time $\tau$, we can approximate the relative effective reproduction number of variants as $R_{t}^{v} / R_{t}^{\text{pivot}} = \exp(\beta_{v}\tau)$, which is equivalent to assuming that the generation time distribution is a point mass at $\tau$.
 
-
-% TODO: Update this to exponential growth framing to talk about how selective advantage relates to difference in exponential growth rates
 We can relate this relative fitness model based on exponential growth to our earlier model of selection by noting that $t = n\tau$, so that
 
 $$
-(1 + s)^{t / \tau} = \exp(\lambda_v t) \implies \lambda_v * \tau = \log{(1 + s)} \approx s.
+(1 + s)^{t / \tau} = \exp(\lambda_v t) \implies \lambda_v \tau = \log{(1 + s)} \approx s.
 $$
 
 This approximation holds for small $s \approx 0$ using a linear approximation of $\log(1+x)$.
@@ -293,7 +287,7 @@ Using these objects in Bayesian inference allows us to incorporate prior informa
 
 \section{Genetic diversity and variant classification}
 
-The classification of viral populations into variants, as seen in systems such as WHO variant labeling, Nextstrain clades, and Nextclade Pango lineages, plays a central role in making viral evolution interpretable and simplifying communication of infection risk or evolution. 
+The classification of viral populations into variants, as seen in systems such as WHO variant labeling, Nextstrain clades, and Nextclade Pango lineages, plays a central role in making viral evolution interpretable and simplifying communication of infection risk or evolution. \cite{Hadfield2018, aksamentov2021nextclade} 
 These classifications exist not only to monitor viral diversity but also to guide public health decisions, ensuring that responses are grounded in structured simplifications of genetic data.
 In this context, variant assignment allows us to collapse the continuous landscape of viral genetic diversity into discrete categories, making it easier to perform population-level analyses and quantify key evolutionary forces, such as selection pressure.
 
@@ -388,7 +382,7 @@ For example, in the context of viruses like SARS-CoV-2 or influenza, where selec
 This allows us to quantify how selection acts on different variants by tracking changes in the variant frequencies over time.
 Variants with higher fitness values will increase in frequency, allowing us to forecast which variants are most likely to dominate future populations.
 Moreover, this framework can support public health interventions.
-By identifying the variants that are under the strongest selective pressure or are most likely to spread, we can inform decisions about vaccine updates, mitigation strategies, and resource allocation.
+By identifying the variants that are under the strongest selective pressure or are most likely to spread, we can make informed decisions about vaccine updates, mitigation strategies, and resource allocation.
 
 Variant assignment, then, provides a powerful tool for simplifying the analysis of viral populations.
 By collapsing genetic diversity into variants, we can approximate population-level expectations using variant-level summaries, significantly reducing the complexity of the analysis.
@@ -403,14 +397,14 @@ With these preliminaries, we now identify several steps towards our goal of mech
 Understanding how viral populations evolve over time is essential for public health interventions, vaccine development, and pandemic preparedness. 
 Evolutionary forecasting provides the tools to predict how variant frequencies will change in response to selective pressures, mutation, and genetic drift.
 
-We'll begin by describing the major targets of evolutionary forecasting mathematically using models of frequency change.
+I'll begin by describing the major targets of evolutionary forecasting mathematically using models of frequency change.
 This requires describing the population genetic forces which underlie frequency change and evolution.
 Though we've focused on selection thus far, it is important to note that selection coexists with genetic drift and mutation.
 
 Genetic drift quantifies the randomness in frequency change due to demographic stochasticity impacting reproduction between generations.
 This is represented in our early model of allele frequency change by the variance of the frequency of allele $A$ in the next generation $p_A'$.
 In equation \ref{eq:allele_variance}, we can see the variance between generation decreases as the population size $N$ increases.
-In general, the magnitude of the genetic drift depends on the effective population size $N_e$ which acts similarly to $N$, but accounts for factors like unequal contribution to the next generation, overlapping generations, and changes in the population size over time which are extremely relevant for viral populations.
+In general, the magnitude of the genetic drift depends on the effective population size $N_e$, which acts similarly to $N$, but accounts for factors like unequal contribution to the next generation, overlapping generations, and changes in the population size over time, which are extremely relevant for viral populations.
 This effective population size $N_e$ is an important feature of population genetic models and is often used as a proxy for prevalence in coalescent-based phylodynamic analyses, though assumption on the generation time $\tau$ are necessary to isolate $N_e$. \cite{MullerWagner2021}
 
 \paragraph{Simplifying to variant-level dynamics}
@@ -419,7 +413,7 @@ We begin by considering a population of viral sequences over time $X_t$.
 Through genomic surveillance, we can sample from the distribution of viruses to observe sequences $x_t^{(1)}, \ldots, x_t^{{N_t}} \sim X_t$.
 
 We use stochastic differential equations (SDEs) motivated by our earlier results to model the evolution of this virus.
-Assume that genotype $x$ has frequency $f(x, t)$, we can model the change in frequency of that genotype as
+If we assume that genotype $x$ has frequency $f(x, t)$, we can model the change in frequency of that genotype as
 
 \begin{equation}
   df_x(t) = \underbrace{\left[\lambda_{x}(t) - \bar{\lambda}(t)\right] f_x(t) dt}_{\text{selection}} + \underbrace{\sigma(x, t) d\vec{W}_{t}}_{\text{drift}} + \underbrace{\mu \frac{\partial^2 }{\partial x^2} f(x,t) dt}_{\text{mutation}},
@@ -434,7 +428,7 @@ Our SDEs are reduced to a system of $V$ equations representing each variant
 \begin{equation}
   df_v(t) = \left[\lambda_{v}(t) - \bar{\lambda}(t)\right] f_v(t) dt + \vec{\Sigma} d\vec{W}_{t},
 \end{equation}
-where we've now dropped the mutation term.
+where I've now dropped the mutation term.
 This reduced system of equations depends on the variant level fitnesses over time, the mean fitness $\bar{\lambda}(t) = \sum_{u} \lambda_u(t)\cdot f_u(t)$, and a $V \times V$ covariance matrix $\Sigma$ for genetic drift.
 The covariance matrix $\Sigma$ for the genetic drift between variants has elements
 \begin{equation}
@@ -445,7 +439,7 @@ The covariance matrix $\Sigma$ for the genetic drift between variants has elemen
 \end{equation}
 This captures the variance of each variant ($i = j$) and the negative covariance between variants ($i \neq j$) due to the finite population constraint.
 
-This suggests that instead of working with continuous genotypes that we may be able to model factors like selection and genetic drift by looking at variant-level data.
+This suggests that, instead of working with continuous genotypes, we may be able to model factors like selection and genetic drift by looking at variant-level data.
 Thinking about frequency change in the population in terms of variant frequency drastically simplifies analysis since we only need labels of variant status over time instead of full sequences, enabling analysis at a much larger scale.
 
 \paragraph{The components of evolutionary forecasting}
@@ -457,7 +451,7 @@ The first step in evolutionary forecasting is summarizing genetic diversity in a
 Genetic diversity reflects the interplay of selection, drift, and mutation in shaping frequency.
 
 When quantifying genetic diversity in practice, we typically work with variant classifications and the frequencies of these variants as summaries of this genetic diversity.
-These variant frequencies are foundation of these forecasts as they reflect the fitness of these variants, the stochastic effects of genetic drift, and diversification within a variant due to mutation.
+These variant frequencies are the foundation of these forecasts as they reflect the fitness of these variants, the stochastic effects of genetic drift, and diversification within a variant due to mutation.
 
 Relative fitness estimation is central to evolutionary forecasting and a central task of this dissertation.
 Beyond merely estimating relative fitness, we seek to contextualize relative fitness with the mechanisms that drive it and use these ideas to predict the population-level impact of evolution.
@@ -467,9 +461,9 @@ Mediated by mutations in viral proteins that enable evasion of host immunity or 
 
 The relative fitness is also context-dependent, influenced by past infection and exposure, spatial heterogeneity, and immune waning within a population.
 These forms of population structure introduce complex spatial and temporal dynamics into evolutionary forecasts.
-To account this, we need to assess how population structure effects relative fitness in real-time and how this will carry into the future.
+To account this, we need to assess how population structure affects relative fitness in real-time and how this will carry into the future.
 
-Though evolutionary forecasting is inherently uncertain, complicated by mutation, genetic drift, and changing population structure.
+Evolutionary forecasting is inherently uncertain, complicated by mutation, genetic drift, and changing population structure.
 By combining these elements, we can potentially improve our estimates and forecasts of relative fitness and project changes in variant frequencies over time, capturing both short-term and long-term dynamics.
 
 As we continue to improve our methods for forecasting, what remains is to develop evolutionary forecasting as a practice.
@@ -479,7 +473,7 @@ This requires ensuring that we have the data, methods, and software tools needed
 
 This dissertation develops fitness-based models by integrating epidemiological data, population genetics, and Bayesian methods for understanding, modeling, and forecasting viral evolution. 
 
-The chapters progress from mechanistic models that jointly estimate transmission and evolutionary dynamics to data-driven, mechanism-informed models incorporating external data for long-term forecasting. 
+The chapters progress from mechanistic models that jointly estimate transmission and evolutionary dynamics to data-driven, mechanism-informed models incorporating external data for long-term forecasting.
 Each chapter contributes to building a comprehensive framework for understanding and predicting the spread of viral variants in pathogens such as SARS-CoV-2.
 
 \paragraph{Chapter 2: Inferring variant-specific effective reproduction numbers from combined case and sequencing data}
