@@ -72,7 +72,7 @@ The results of these models are stored in a standardized \texttt{evofr.posterior
 Fundamentally, \evofr\ seeks to make the kind of bespoke analyses that are common in papers about SARS-CoV-2 and pathogen evolution reproducible.
 It contains well-documented reproductions of several methods employed in research papers, to improve the reach of these methods and enable easy replication of analyses with these papers.
 
-While inference for these models typically involve stochastic processes, \evofr includes mechanisms to fix random seeds, ensuring that results are deterministic and consistent across runs.
+While inference for these models typically involve stochastic processes, \evofr\ includes mechanisms to fix random seeds, ensuring that results are deterministic and consistent across runs.
 
 Additionally, all intermediates and outputs including preprocessed data, model configurations and posterior samples can be stored in standardized formats like JSON and CSV.
 This ensures that results can be reliably reproduced and shared.
@@ -189,23 +189,23 @@ The visualization component transforms model outputs into interactive, web-based
 %TODO: Change to say that it enables easy visualization of \evofr's outputs for web applications.
 %TODO: Mention that we host a website and provide the link
 This web application allows users to explore the latest forecasts or upload local data for analysis.
-These visualizations provide intuitive representations of complex genomic data, making \forecastsNcov a valuable resource for technical and non-technical audiences alike.
+These visualizations provide intuitive representations of complex genomic data, making \forecastsNcov\ a valuable resource for technical and non-technical audiences alike.
 
 \subsection{Contributions}
 
-As a component of Nextstrain, \forecastsNcov fills a critical gap by adding predictive capabilities to the platform’s established phylogenetic tools.
+As a component of Nextstrain, \forecastsNcov\ fills a critical gap by adding predictive capabilities to the platform’s established phylogenetic tools.
 It provides continuously updated forecasts that enable users to anticipate the trajectories of SARS-CoV-2 variants (Figs \ref{fig:fn_clade_frequencies} and \ref{fig:fn_lineage_frequencies})  as well as visualize the current growth advantages of variants at the level of Nextstrain clade and Pango lineage (Figs \ref{fig:fn_clade_growth_advantages} and Figs \ref{fig:fn_lineage_growth_advantages}).
 
 This forward-looking approach complements the retrospective focus of phylogenetic inference, creating a comprehensive framework for understanding both past and future variant dynamics.
 
-By automating the forecasting process, \forecastsNcov ensures the timely availability of results, which are stored publicly as JSON files on AWS S3.
+By automating the forecasting process, \forecastsNcov\ ensures the timely availability of results, which are stored publicly as JSON files on AWS S3.
 These outputs are stratified by data provenance (e.g., GISAID, GenBank), variant classification (e.g., Nextstrain clades, Pango lineages), and geographic resolution (e.g., global, USA).
 The integration of these outputs with an interactive web application further enhances their accessibility, enabling users to visualize variant trends dynamically.
 This functionality supports public health efforts by providing actionable insights that inform decision-making at local, national, and global levels.
 
 \subsection{Discussion}
 
-\forecastsNcov\ represents a significant advancement in operationalizing evolutionary forecasting, combining the predictive modeling framework of \evofr with Nextstrain’s robust infrastructure for genomic surveillance.
+\forecastsNcov\ represents a significant advancement in operationalizing evolutionary forecasting, combining the predictive modeling framework of \evofr\ with Nextstrain’s robust infrastructure for genomic surveillance.
 By automating the end-to-end process—from data ingestion to real-time forecast visualization—the platform offers a forward-looking complement to the phylogenetic analyses that form the foundation of Nextstrain.
 This dual approach provides a more comprehensive understanding of variant dynamics, addressing both retrospective and prospective dimensions of pathogen evolution.
 
