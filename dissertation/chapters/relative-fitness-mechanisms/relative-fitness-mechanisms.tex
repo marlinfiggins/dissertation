@@ -86,7 +86,7 @@ We summarize dynamics of a three-variant mechanistic transmission model in Fig.~
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\linewidth]{./figures/vis_mechanisms.png}
-    \caption{
+    \caption[\textbf{Simulated variant dynamics in a mechanistic model.}]{
       \textbf{Simulated variant dynamics in a mechanistic model.}
       Mechanistic transmission models constrain variant frequency dynamics by specifying a functional form for relative fitnesses.
       Simulations of a three-variant model including wildtype $W$, an intrinsic transmission variant $T$, and an immune escape variant $E$ show the relationship between population-level transmission and selection.
@@ -144,7 +144,7 @@ Additionally, this shows that when intrinsic transmissibility increases are limi
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\linewidth]{./figures/transmission_tradeoff.png}
-    \caption{
+    \caption[\textbf{Trade-off between degree of immune escape and increased transmissibility.}]{
       \textbf{Trade-off between degree of immune escape and increased transmissibility.}
       A. Relative fitness for a transmissibility increasing variant $T$ with $\varTransmission_T=0.2$ and an immune escaping variant $E$ with $\varEscape_E=0.3$ for $R_{0, \wt}=2.8$ and $1 / \gamma = 3.0$ days.
       The intersection point shows that after 40\% of the population has wildtype immunity, the escape variant has higher fitness.
@@ -198,7 +198,7 @@ Later in the epidemic, this relationship reverses with estimated growth advantag
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\linewidth]{./figures/mechanism_identification.png}
-    \caption{
+    \caption[\textbf{Relative fitness is correlated with vaccination levels in the absence of immune escape.}]{
       \textbf{Relative fitness is correlated with vaccination levels in the absence of immune escape.}
       We simulate the growth of a pure transmissibility increased variant at varying levels of vaccination.
       Darker colors represent lower vaccine uptake.
@@ -271,7 +271,7 @@ This regressor is chosen via time series cross-validation among model architectu
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\linewidth]{./figures/selective_pressure_prediction.png}
-    \caption{
+    \caption[\textbf{Predicting epidemic growth rate using estimated selective pressure.}]{
       \textbf{Predicting epidemic growth rate using estimated selective pressure.}
       A. Variant frequency estimated using the Gaussian process relative fitness model between January 2021 and November 2022 for sequence count data from Washington state.
       B. Case counts from Washington state.
@@ -324,7 +324,7 @@ Additionally, we subset by exposure history and find that cohorts with only very
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\linewidth]{./figures/latent_immune.png}
-    \caption{
+    \caption[\textbf{Latent factor models of immunity describe variant dynamics.}]{
       \textbf{Latent factor models of immunity describe variant dynamics.}
       We fit the latent immunity factor model to recent SARS-CoV-2 sequence data globally.
       A. Variant frequency. Lines are colored to show 4 variants of interest (of 53 total variants) with the style of the line denoting 3 countries of interest (of 18 total countries).
