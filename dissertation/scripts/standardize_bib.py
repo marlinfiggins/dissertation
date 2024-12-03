@@ -104,6 +104,7 @@ def capitalize_proper_nouns(title):
     proper_nouns = [
         "New York",
         "Markov",
+        "Gaussian",
         "March",
         "Erlang",
         "June",
