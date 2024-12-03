@@ -143,20 +143,21 @@ This enables selection for different strains over time.
 
 %TODO: Edit to remove discussion on generation time unless this props up in the viral sequence section
 
-We first consider a standard ODE-based model for infectious diseases with multiple variants: an SIR model in which there are a wild-type $\text{wt}$ and a variant $\text{var}$. 
-We assume that the variant virus can differ in two ways from the wild type: it may differ in innate transmissibility by a factor of $\eta_{T}$, or it may differ in its infectious period by a factor $\eta_{G}$. 
+We first consider a standard ODE-based model for infectious diseases with multiple variants: an SIR model in which there are a wild-type $\text{wt}$ and a variant $\text{var}$.
+We assume that the variant virus can differ in two ways from the wild type: it may differ in innate transmissibility by a factor of $\eta_{T}$, or it may differ in its infectious period by a factor $\eta_{G}$.
 This gives us the system of ordinary differential equations
 \begin{align}
     \frac{d S}{d t} &= - \beta S I_{\text{wt}} - \beta \eta_{T} S I_{\text{var}},\\
   \frac{d I_{\text{wt}} }{d t} &= \beta S I_{\text{wt}} - \gamma I_{\text{wt}} = r_{\text{wt}}(t) I_{\text{wt}},\\
   \frac{d I_{\text{var}}}{d t} &= \beta \eta_{T} S I_{\text{var}} - \gamma \eta_{G} I_{\text{var}} = r_{\text{var}}(t) I_{\text{var}}.
 \end{align}
+\tbc{Similar comment to in the relative fitness mechanisms manuscript. It's really helpful for my understanding to write out $\phi_\text{wt}$ and $\phi_\text{var}$}.
 In this model, we now have two different $R_{0}$ values, $R_{0}^{\text{wt}} = \frac{\beta}{\gamma}$ and $R_{0}^{\text{var}} = \frac{\eta_{T}}{\eta_{G}}R_{0}^{\text{wt}}$.
 
 Though this model is not appropriate for infectious diseases with non-trivial competition dynamics via strain-specific immunity for example, it gives us an essential result for epidemiological modeling of genetic variants. \cite{Gog2002} %TOD: Cite?
 
-% We see that once again there is a dependence between transmissibility and the timing of infection. 
-% More precisely, we notice that without specifying $\eta_{G}$, the variant transmission advantage is unidentifiable. 
+% We see that once again there is a dependence between transmissibility and the timing of infection.
+% More precisely, we notice that without specifying $\eta_{G}$, the variant transmission advantage is unidentifiable.
 
 \section{Population genetics, viral fitness, and selection}
 
@@ -164,20 +165,20 @@ As viruses spread from individual to individual, they generate genetic variation
 In the context of ordinary differential equations, we've shown that multiple strains can co-circulate and may dominate one another over time.
 However, we still need to develop an understanding of how this co-circulation and transmission affects the underlying population's genetic diversity.
 
-When dealing with pathogens with serial replacement, causing large waves of infection, we're primarily interested in selection. 
+When dealing with pathogens with serial replacement, causing large waves of infection, we're primarily interested in selection.
 Selection acts as a ``force'' on the genetic diversity of the population favoring particular genetic variants and causing the population to evolve in response to particular environmental pressures.
 We'll now define selection and evolution.
 
 \begin{itemize}
-  \item \emph{Selection} is the process by which individuals have higher fitness in certain environments.
-  \item \emph{Evolution} is the change in the genetic composition of the population over time due to selection and heritable variation.
+  \item \emph{Selection} is the process by which individuals have higher fitness \tbc{this would seem more naturally to me as `leave more offspring' rather than `have higher fitness', although I admit these concepts are synonymous. I just don't think of having higher fitness as a `process'} in certain environments.
+  \item \emph{Evolution} is the change in the genetic composition of the population over time due to selection and heritable variation. \tbc{Evolution can also occur due to genetic drift}
 \end{itemize}
 
 Often, we’re interested in not just the presence of selection but its magnitude.
 When quantifying selection in population genetics, the selection coefficient or relative fitness are often discussed.
-In the following section, we'll introduce both these quantities and their relationship to one another. 
+In the following section, we'll introduce both these quantities and their relationship to one another.
 
-Suppose that we have alleles $A$ and $B$ in a population with $x_A$ individuals having allele $A$ and $x_B$ having allele $B$. 
+Suppose that we have alleles $A$ and $B$ in a population with $x_A$ individuals having allele $A$ and $x_B$ having allele $B$.
 We assume that individuals with alleles $A$ and $B$ produce on average $W_A$ and $W_B$ offspring respectively.
 These $W_A$ and $W_B$ are the Wrightian fitness of these alleles.
 Assuming that the number of offspring has Poisson distribution with means $W_A$ and $W_B$ respectively, we can write the count of offspring with allele $A$ in the next generation $x_A'$ as
@@ -200,7 +201,7 @@ Using our earlier derivation, we can write the expected frequency of the variant
 \begin{equation}
 p_{n\tau} = \frac{(1+s)^{n}p_{0}}{(1+s)^{n}p_{0} + (1 - p_0)}.
 \end{equation}
-
+\tbc{The subscripting feels a little weird here. You've already used subscript to denote the specific allele ie $p_A$. It looks like it's effectively generation count here? But then shouldn't it be $p_n$ and not $p_{n\tau}$? I get that because it's discrete generations you don't want $p(n)$. Maybe just swap the above from $p_A$ to $p$?}
 
 % When dealing with infectious diseases like SARS-CoV-2, we may be interested in selection for two reasons.
 %     Awareness: Quantifying variant advantages to understand the viral population right now or in short-term
@@ -218,6 +219,7 @@ Alternative models focusing on exponentially growing population have been develo
 These models often estimate the relative fitness of variants based on changes in variant frequencies.
 \emph{Relative fitness} is the relative capacity for individuals to reproduce in a population.
 In exponentially growing populations, we can think about this as the difference between the growth rates.
+\tbc{Clarify the difference between absolute fitness $W_A$ and $W_B$ vs relative fitness of these two alleles. It's almost $s$ right, but quite? It should require the absolute term $W_B$ that $W_A = (1+s) W_B$ entails.}
 
 One model in this vein that has gained popularity for analyzing SARS-CoV-2 variant frequencies and estimating relative fitness is multinomial logistic growth (MLR).
 Assuming that each variant has a fixed fitness relative to all others, we can derive a model for variant frequencies over time
@@ -225,16 +227,18 @@ Assuming that each variant has a fixed fitness relative to all others, we can de
 f_{v}(t) = \frac{p_{v}\exp(r_{v}t)}{\sum_{u} p_{u} \exp(r_{u}t)},
 \end{align}
 where $f_{v}$ is the frequency of variant $v$ in the virus population at time $t$.
-Here, $r_{v}$ and $p_{v}$ can be thought of as variant-specific growth rates per day and initial prevalence. 
-Due to the fact that variant frequencies must add to one, $r_{v}$ and $p_{v}$ are not uniquely identifiable for all variants. 
+Here, $r_{v}$ and $p_{v}$ can be thought of as variant-specific growth rates per day and initial prevalence.
+Due to the fact that variant frequencies must add to one, $r_{v}$ and $p_{v}$ are not uniquely identifiable for all variants.
 Therefore, we often instead work with a model of the form
 \begin{align}
 f_{v}(t) = \frac{\exp(\lambda_{v} t + \alpha_{v})}{\sum_{u} \exp(\lambda_{u} t + \alpha_{u})},
 \end{align}
+\tbc{I'm confused by this. What happened to the initial frequencies $p_v$? It got moved inside the exp to become $alpha_v$? Why do it this way?}
 where we've set some variant as a pivot with $\lambda_{\text{pivot}} = \alpha_{\text{pivot}}=0$.
 Using these MLR models, the relative fitness of variant $v$ relative to the pivot is often interpreted as being $\lambda_{v}$.
 
 By introducing the mean generation time $\tau$, we can approximate the relative effective reproduction number of variants as $R_{t}^{v} / R_{t}^{\text{pivot}} = \exp(\beta_{v}\tau)$, which is equivalent to assuming that the generation time distribution is a point mass at $\tau$.
+\tbc{Can you say more here about conversion between time in generations vs time in days and what this entails in terms of MLR parameter values?}
 
 We can relate this relative fitness model based on exponential growth to our earlier model of selection by noting that $t = n\tau$, so that
 
@@ -282,11 +286,12 @@ These expectations can be used to compute the probability of events under the po
 % \end{align*}
 % This distribution is useful for analysing how likely observed data is under a given a model.
 
-Using these objects in Bayesian inference allows us to incorporate prior information about a system of interest, estimate parameters accounting for uncertainty in the model and observation, and build models that can be informed by various data sources simultaneously. 
+Using these objects in Bayesian inference allows us to incorporate prior information about a system of interest, estimate parameters accounting for uncertainty in the model and observation, and build models that can be informed by various data sources simultaneously.
 
 \section{Genetic diversity and variant classification}
 
-The classification of viral populations into variants, as seen in systems such as WHO variant labeling, Nextstrain clades, and Nextclade Pango lineages, plays a central role in making viral evolution interpretable and simplifying communication of infection risk or evolution. \cite{Hadfield2018, aksamentov2021nextclade} 
+The classification of viral populations into variants, as seen in systems such as WHO variant labeling, Nextstrain clades, and Pango lineages, plays a central role in making viral evolution interpretable and simplifying communication of infection risk or evolution. \cite{Hadfield2018, aksamentov2021nextclade}
+\tbc{Also cite Rambaut et al Nat Microbiology 2020 as canonical reference for Pango lineages.}
 These classifications exist not only to monitor viral diversity but also to guide public health decisions, ensuring that responses are grounded in structured simplifications of genetic data.
 In this context, variant assignment allows us to collapse the continuous landscape of viral genetic diversity into discrete categories, making it easier to perform population-level analyses and quantify key evolutionary forces, such as selection pressure.
 
