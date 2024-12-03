@@ -31,7 +31,7 @@ Forecasting variant dynamics allows us to make informed decisions about vaccines
 % Paragraph giving overview of previous application of fitness models (flu and SARS-CoV-2)
 Fitness models are a key framework for forecasting changes in variant frequency through time.
 These models were first introduced for the study of seasonal influenza virus \cite{luksza2014predictive, morris2018predictive, huddleston2020integrating} and there have relied on correlates of viral fitness such as mutations to epitope sites on influenza's surface proteins.
-In modeling emergence and spread of SARS-CoV-2 variant viruses, the use of Multinomial Logistic Regression (MLR) has become commonplace \cite{annavajhala2021emergence, faria2021genomics, obermeyer2022analysis, susswein2023early}.
+In modeling emergence and spread of SARS-CoV-2 variant viruses, the use of Multinomial Logistic Regression (MLR) has become commonplace \cite{Annavajhala2021, faria2021genomics, obermeyer2022analysis, susswein2023early}.
 Here, MLR is analogous to a population genetics model of a haploid population in which different variants have a fixed growth advantage and are undergoing Malthusian growth.
 As such, it presents a natural model for describing evolution and spread of SARS-CoV-2 variants.
 Additionally, models introduced by Figgins and Bedford \cite{Figgins2021} incorporate case counts and variant-specific $R_t$, but still can be used to project variant frequencies while Piantham et al \cite{piantham2021estimating} does not incorporate them.
@@ -85,7 +85,7 @@ Consistent with less available data, we observe that the model predictions for J
 
 
 We utilize five models for predicting the frequencies of SARS-CoV-2 variants.
-The simplest of these models is Multinomial Logistic Regression (MLR) commonly used in SARS-CoV-2 analyses \cite{annavajhala2021emergence, faria2021genomics, obermeyer2022analysis, susswein2023early}, which uses only variant-specific sequence counts and has a fixed growth advantage for each variant.
+The simplest of these models is Multinomial Logistic Regression (MLR) commonly used in SARS-CoV-2 analyses \cite{Annavajhala2021, faria2021genomics, obermeyer2022analysis, susswein2023early}, which uses only variant-specific sequence counts and has a fixed growth advantage for each variant.
 More complex models include the Fixed Growth Advantage (FGA) and Growth Advantage Random Walk (GARW) parameterizations of the variant $R_t$ model introduced by Figgins and Bedford \cite{Figgins2021}, which uses case counts in addition to variant-specific sequence counts.
 The Piantham et al.\ model \cite{piantham2021estimating} operates on a similar principle in estimating relative fitness, but differs in model details and does not use case counts.
 We compare these four models to a naive model to serve as a reference for comparison.
