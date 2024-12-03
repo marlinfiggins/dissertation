@@ -33,14 +33,14 @@ The primary objective of this dissertation is to develop and evaluate models tha
 
 One of the fundamental challenges in forecasting SARS-CoV-2 variants is accounting for the virus's rapid mutation rate and its interaction with the human immune system. Mutations can lead to new variants with increased transmissibility or the ability to evade immunity. To address this, it is essential to incorporate mathematical models that can capture the complexities of viral evolution and spread.
 
-In order to contextualize this work, we will begin with an overview of existing methods for understanding infectious disease transmission, relevant epidemiological quantities, and their relationships to one another.
+In order to contextualize this work, I will begin with an overview of existing methods for understanding infectious disease transmission, relevant epidemiological quantities, and their relationships to one another.
 
 %TODO: Extend this section, we really also want to menion effective population size, genetic drift .etc
-We will then discuss existing methods for understanding population turnover from population genetics and their relationship to some of the related quantities in the epidemiological context.
+I will then discuss existing methods for understanding population turnover from population genetics and their relationship to some of the related quantities in the epidemiological context.
 
-We will then provide an overview of Bayesian inference, model development, and optimization methods that will be used throughout this dissertation to estimate quantities from data and make predictions while quantifying uncertainty.
+I will then provide an overview of Bayesian inference, model development, and optimization methods that will be used throughout this dissertation to estimate quantities from data and make predictions while quantifying uncertainty.
 
-Lastly, we will end this introduction by discussing the larger problem of evolutionary forecasting: its components, its aims, and the benefits of developing data-driven evolutionary forecasts on a global scale.
+Lastly, I will end this introduction by discussing the larger problem of evolutionary forecasting: its components, its aims, and the benefits of developing data-driven evolutionary forecasts on a global scale.
 %TODO: This should really end with a description of my contributions.
 
 % My interest is in modeling the epidemic and evolutionary dynamics of virus transmission jointly to better understand how and why virus populations change over time and the consequences of this on human health.
@@ -52,10 +52,10 @@ Lastly, we will end this introduction by discussing the larger problem of evolut
 %
 \section{Epidemic models}
 
-We'll give a basic introduction of the ordinary differential equation (ODE) formulation of epidemic models. 
+I will give a basic introduction of the ordinary differential equation (ODE) formulation of epidemic models.
 We begin with the classic SIR model \cite{KermackMcKendrick1927}.
 
-We assume that there are three types of individuals in the population: susceptible ($S$), infected ($I$), and recovered $R$. 
+We will assume that there are three types of individuals in the population: susceptible ($S$), infected ($I$), and recovered ($R$). 
 Susceptible individuals can become infected, infected individuals eventually recover (or die), and recovered individuals cannot become infected once again. 
 This gives us the system of equations
 \begin{align}
@@ -64,12 +64,12 @@ This gives us the system of equations
   \frac{d R}{d t} &= \gamma I,
 \end{align}
 where $\beta$ is an effective infectious contact rate, $\gamma$ is a recovery rate. 
-This form of the model lends itself to a couple of analyses which will become important as we extend these models to more complicated infection dynamics.
+This form of the model lends itself to a couple of analyses that will become important as we extend these models to more complicated infection dynamics.
 
 \paragraph{Effective reproduction number}%
 
 An important quantity that is derived from epidemic models is the effective reproduction number $R_t$. 
-We can see that when $R_{t} = \beta S(t) / \gamma > 1$, the number of infected individuals will be increasing i.e. $\frac{dI}{dt} > 0$. 
+We can see that when $R_{t} = \beta S(t) / \gamma > 1$, the number of infected individuals will be increasing, i.e., $\frac{dI}{dt} > 0$. 
 This effective reproduction $R_{t}$ controls the direction of the epidemic and reflects the average number of secondary infections caused by a single infection.
 In the special case where the population is fully susceptible ($S(t) = 1$), this quantity is called the basic reproduction number $R_{0}$, and it is interpreted as the average number of secondary infections caused by a single individual in an otherwise completely susceptible (naive) population.
 
@@ -160,7 +160,7 @@ Though this model is not appropriate for infectious diseases with non-trivial co
 
 \section{Population genetics, viral fitness, and selection}
 
-As viruses transmit from individual to individual, they generate genetic variation through mutation, drift, and selection.
+As viruses spread from individual to individual, they generate genetic variation through mutation, drift, and selection.
 In the context of ordinary differential equations, we've shown that multiple strains can co-circulate and may dominate one another over time.
 However, we still need to develop an understanding of how this co-circulation and transmission affects the underlying population's genetic diversity.
 
@@ -174,7 +174,7 @@ We'll now define selection and evolution.
 \end{itemize}
 
 Often, we’re interested in not just the presence of selection but its magnitude.
-When quantifying selection in population genetics, the selective coefficient or relative fitness are often discussed.
+When quantifying selection in population genetics, the selection coefficient or relative fitness are often discussed.
 In the following section, we'll introduce both these quantities and their relationship to one another. 
 
 Suppose that we have alleles $A$ and $B$ in a population with $x_A$ individuals having allele $A$ and $x_B$ having allele $B$. 
@@ -185,7 +185,6 @@ Assuming that the number of offspring has Poisson distribution with means $W_A$ 
 \begin{equation}
 x_A' \sim \text{Multinomial}\left(N, \frac{W_A x_A}{W_A x_A + W_B x_B}\right),
 \end{equation}
-
 where we've fixed the total number of offspring at $N$.
 Using this equation, we can write the expected frequency of allele $A$, $p_A = \frac{x_A}{x_A + x_B}$, and its variance as
 \begin{align}
@@ -196,7 +195,7 @@ where we have defined the mean fitness $\bar{W} = W_A p_A + W_B p_B$.
 This provides a baseline for how fitness changes under fitness dynamics.
 
 To measure the magnitude of selection for a particular allele, we can define the selection coefficient $s$ so that the fitness of $A$ is $W_A = (1+s) W_B$ per generation.
-Using our earlier derivation, we can write the expected frequency of the variant allele assuming selective advantage $s$ after $n$ generations of length $\tau$ days as
+Using our earlier derivation, we can write the expected frequency of the variant allele assuming selection coefficient $s$ after $n$ generations of length $\tau$ days as
 
 \begin{equation}
 p_{n\tau} = \frac{(1+s)^{n}p_{0}}{(1+s)^{n}p_{0} + (1 - p_0)}.
@@ -239,9 +238,9 @@ By introducing the mean generation time $\tau$, we can approximate the relative 
 
 We can relate this relative fitness model based on exponential growth to our earlier model of selection by noting that $t = n\tau$, so that
 
-$$
+\begin{equation}
 (1 + s)^{t / \tau} = \exp(\lambda_v t) \implies \lambda_v \tau = \log{(1 + s)} \approx s.
-$$
+\end{equation}
 
 This approximation holds for small $s \approx 0$ using a linear approximation of $\log(1+x)$.
 This provides a simple relationship between the traditional selection coefficient $s$ used in population genetics and the relative fitness $\lambda$ that we'll use throughout this dissertation.
@@ -312,7 +311,7 @@ For a set of variants \( \{V_1, V_2, \dots, V_K\} \), the WCSS is given by
 
 \begin{align}
 \text{WCSS} &= \sum_{k=1}^{K} \sum_{x \in V_{k}} (G(x) - \mu_{V_k})^2\\
-            &= \sum_{k=1}^{K} \abs{V_k} \Var_{x \sim V_k}[G(x)]
+            &= \sum_{k=1}^{K} \abs{V_k} \Var_{x \sim V_k}[G(x)],
 \end{align}
 where $\mu_V$ is the centroid of variant metric, representing the average value of the metric for sequences in that variant.
 
@@ -340,7 +339,9 @@ This gives us an approximation
   \Expect_{X_t}[G] \approx \sum_{u} f_{u}(t) \overline{G}_u,
 \end{equation}
 for the expected phenotype across the population, which reduces a potentially complex integral into a weighted sum of variant means.
-This allows us to get estimates and expectations of phenotype without sequence-level phenotype predictions or a generative sequence model $p_{X_t}(x)$, instead we operate at the level of variant.
+This allows us to estimate expectations of variant phenotypes without sequence-level phenotype predictions or a generative sequence model $p_{X_t}(x)$.
+Instead, we operate at the level of variant.
+
 
 \paragraph{Error Bounds and Limitations}
 
@@ -398,7 +399,7 @@ Understanding how viral populations evolve over time is essential for public hea
 Evolutionary forecasting provides the tools to predict how variant frequencies will change in response to selective pressures, mutation, and genetic drift.
 
 I'll begin by describing the major targets of evolutionary forecasting mathematically using models of frequency change.
-This requires describing the population genetic forces which underlie frequency change and evolution.
+This requires describing the population genetic forces that underlie frequency change and evolution.
 Though we've focused on selection thus far, it is important to note that selection coexists with genetic drift and mutation.
 
 Genetic drift quantifies the randomness in frequency change due to demographic stochasticity impacting reproduction between generations.
@@ -419,8 +420,8 @@ If we assume that genotype $x$ has frequency $f(x, t)$, we can model the change 
   df_x(t) = \underbrace{\left[\lambda_{x}(t) - \bar{\lambda}(t)\right] f_x(t) dt}_{\text{selection}} + \underbrace{\sigma(x, t) d\vec{W}_{t}}_{\text{drift}} + \underbrace{\mu \frac{\partial^2 }{\partial x^2} f(x,t) dt}_{\text{mutation}},
 \end{equation}
 where $\lambda_x(t)$ is the fitness of genotype $x$ at time $t$, $\bar{\lambda}(t) = \int_{\mathcal{X}} \lambda_z(t)\cdot f_z(t) dz$ is the mean fitness in the population at time $t$.
-We also have $\sigma(x, t) = \sqrt{\frac{f(x,t) (1 - f(x,t))}{N_e}}$ which captures genetic drift i.e. the random fluctuations in the frequency due to randomness in reproduction.
-Lastly, we have a diffusion term $\mu \frac{\partial^2 }{\partial x^2} f(x,t) dt$ which describes the diffusion of frequency across genotype space due to mutation where $\mu$ is a mutation rate.
+We also have $\sigma(x, t) = \sqrt{\frac{f(x,t) (1 - f(x,t))}{N_e}}$, which captures genetic drift, i.e., the random fluctuations in the frequency due to randomness in reproduction.
+Lastly, we have a diffusion term, $\mu \frac{\partial^2 }{\partial x^2} f(x,t) dt$, which describes the diffusion of frequency across genotype space due to mutation with $\mu$ as the mutation rate.
 
 By leveraging the variant assignment framework introduced earlier, we can simplify our models by tracking the dynamics among variants to predict future changes in viral populations.
 Our SDEs are reduced to a system of $V$ equations representing each variant
@@ -459,9 +460,9 @@ Beyond merely estimating relative fitness, we seek to contextualize relative fit
 Understanding the biological basis for fitness differences is essential for forecasting.
 Mediated by mutations in viral proteins that enable evasion of host immunity or enhance binding affinity, viral characteristics like immune escape or transmissibility underpin relative fitness advantages and can cause large waves of infection.
 
-The relative fitness is also context-dependent, influenced by past infection and exposure, spatial heterogeneity, and immune waning within a population.
+The relative fitness is also context-dependent, influenced by past infection and exposure, spatial heterogeneity, and waning immunity within a population.
 These forms of population structure introduce complex spatial and temporal dynamics into evolutionary forecasts.
-To account this, we need to assess how population structure affects relative fitness in real-time and how this will carry into the future.
+To account for this, we need to assess how population structure affects relative fitness in real-time and how this will carry into the future.
 
 Evolutionary forecasting is inherently uncertain, complicated by mutation, genetic drift, and changing population structure.
 By combining these elements, we can potentially improve our estimates and forecasts of relative fitness and project changes in variant frequencies over time, capturing both short-term and long-term dynamics.
@@ -486,7 +487,7 @@ This mechanistic framework provides deeper insights into the joint behavior of e
 \begin{itemize}
   \item We integrate case data and sequencing data to model evolution and transmission jointly, offering real-time insights into how variants spread and evolve under different conditions.
   \item We develop a model that jointly estimates both variant-specific effective reproduction numbers and relative fitness capturing the interaction between evolutionary dynamics and transmission rates.
-  \item Sets the stage for models in later chapters that will refine the understanding of transmission and immunity by linking these processes to fitness.
+  \item We set the stage for models in later chapters that will refine the understanding of transmission and immunity by linking these processes to fitness.
 \end{itemize}
 
 \paragraph{Chapter 3: Fitness models provide accurate short-term forecasts of SARS-CoV-2 variant frequency}
@@ -496,10 +497,10 @@ The emphasis is on assessing the performance of statistical models and the impor
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
-        \item Development of a framework and pipeline for evaluating MLR models and other fitness-based models in the context of short-term forecasting, focusing on forecast accuracy and reliability.
-        \item Shows the limitations of statistical models for longer-term forecasts, emphasizing the need for more comprehensive approaches.
-        \item Identifies the role of data quality and sequencing capacity in enabling accurate forecasts, suggesting that a minimum of 1,000 sequences per week is necessary for reliable short-term predictions.
-        \item Sets the stage for models in later chapters that will integrate external data to improve forecast reliability by better capturing transmission mechanisms and immune escape.
+        \item We develop a framework and pipeline for evaluating MLR models and other fitness-based models in the context of short-term forecasting, focusing on forecast accuracy and reliability.
+        \item We show the limitations of statistical models for longer-term forecasts, emphasizing the need for more comprehensive approaches.
+        \item We identify the role of data quality and sequencing capacity in enabling accurate forecasts, suggesting that a minimum of 1,000 sequences per week is necessary for reliable short-term predictions.
+        \item We set the stage for models in later chapters that will integrate external data to improve forecast reliability by better capturing transmission mechanisms and immune escape.
 \end{itemize}
 
 This chapter provides a rigorous evaluation of fitness-based forecasting models and emphasizes the importance of data collection and integration in producing accurate short-term forecasts.
@@ -507,14 +508,13 @@ This chapter provides a rigorous evaluation of fitness-based forecasting models 
 \paragraph{Chapter 4: Frequency dynamics predict viral fitness, antigenic relationships and epidemic growth}
 
 Building on the insights from Chapters 2 and 3, this chapter develops a comprehensive framework that combines epidemiological theory and population genetics to estimate time-varying relative fitness.
-This chapter introduces several important innovations, including the selective pressure metric, a latent factor model, and a focus on immune escape as a critical factor for explaining fitness dynamics and viral evolution.
+This chapter introduces several contributions, including a selective pressure metric, a latent factor model, and a focus on immune escape as a critical factor for explaining fitness dynamics and viral evolution.
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
-  \item Development of a Gaussian Process model for estimating time-varying relative fitness, tracking how variants evolve in real-time regardless of underlying mechanism.
-  \item The introduction of a selective pressure metric, which predicts epidemic growth rates without the need for case data, based solely on genetic data.
-  \item Development of the latent factor model, which constructs a pseudo-antigenic space, allowing for comparisons of immunity differences between populations and informing forecasts about antigenic evolution.
-  \item Demonstrates the utility of the selective pressure metric for early detection of variant growth, improving the ability to intervene before they dominate epidemiologically.
+  \item We develop a Gaussian Process model for estimating time-varying relative fitness, to track how variants evolve in real-time regardless of underlying mechanism.
+  \item We derive a selective pressure metric, which predicts epidemic growth rates without the need for case data, based solely on genetic data.
+  \item We develop a latent factor pseudo-immune model, which constructs a pseudo-antigenic space, allowing for comparisons of immunity differences between populations and informing forecasts about antigenic evolution.
 \end{itemize}
 
 This chapter provides a deeper understanding of how transmission mechanisms and immune escape influence viral evolution, offering critical insights for improving the forecasting of variant success.
@@ -526,10 +526,10 @@ By leveraging deep mutational scanning data, these models provide a mechanism-in
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
-  \item Development of a framework that integrates molecular phenotype data with fitness innovations to quantify and predict lineage success.
-  \item Introduction of a regression-based prior to enable out-of-sample forecasting of relative fitness for unseen variants, extending models introduced in earlier chapters.
-  \item Demonstration that immune escape is the dominant phenotypic driver of fitness, while transmissibility-related traits such as ACE2 binding affinity and RBD expression also contribute.
-  \item Validation of the framework’s predictive accuracy, highlighting its potential for real-time monitoring and broader application to other rapidly evolving pathogens.
+  \item  We develop a framework that integrates molecular phenotype data with fitness innovations to quantify and predict lineage success.
+  \item We introduce a regression-based prior for fitness that enables out-of-sample forecasting of relative fitness for unseen variants, extending models introduced in earlier chapters.
+  \item We demonstrate that immune escape is the dominant phenotypic driver of fitness, while transmissibility-related traits such as ACE2 binding affinity and RBD expression also contribute.
+  \item We validate our framework’s predictive accuracy, highlighting its potential for real-time monitoring and broader application to other rapidly evolving pathogens.
 \end{itemize}
 
 This chapter advances the field by providing a scalable, data-driven framework that combines molecular phenotypes with evolutionary modeling to improve forecasting of lineage success.
@@ -537,13 +537,13 @@ Its applications extend beyond SARS-CoV-2, offering insights into antigenic evol
 
 \paragraph{Chapter 6: Operationalizing evolutionary forecasts: \evofr\ and \forecastsNcov}
 
-Using the theoretical and statistical grounding developed in previous chapters, this chapter develops and describes software which takes evolutionary forecasting into a practice.
+Using the theoretical and statistical grounding developed in previous chapters, this chapter develops and describes software that takes evolutionary forecasting from a series of one-off analyses to a practice.
 The software tools \evofr\ and \forecastsNcov\ move evolutionary forecasts from a series of bespoke analyses on relative fitness and variant frequency to a tool kit for rapidly implementing these analyses and a reproducible workflow for real-time monitoring and forecasting SARS-CoV-2 evolution in practice.
 
 \noindent\textbf{Key contributions}:
 \begin{itemize}
-  \item Development of a Python package \evofr\ which implements many of the tools needed to analyze and forecast variant frequency change and estimate relative fitness.
-  \item Development of an automated and reproducible workflow \forecastsNcov\ for producing and visualizing forecasts of SARS-CoV-2 variant evolution.
+  \item We develop a Python package \evofr\ which implements many of the tools needed to analyze and forecast variant frequency change and estimate relative fitness.
+  \item We develop an automated and reproducible workflow \forecastsNcov\ for producing and visualizing forecasts of SARS-CoV-2 variant evolution.
 \end{itemize}
 
 This chapter operationalizes evolutionary forecasting, transforming the discipline from a series scientific analyses to a dynamic process for predicting pathogen evolution using genomic surveillance data.
@@ -553,6 +553,6 @@ This chapter operationalizes evolutionary forecasting, transforming the discipli
 This chapter synthesizes the contributions of the previous chapters and explores potential directions for future research.
 It highlights how the development of data-driven and mechanism-informed models sets the stage for further advances in viral forecasting, including future integration of external data sources and the application of generative sequence models to evolutionary forecasting.
 
-We summarize how the work in this dissertation advances viral forecasting by developing models that integrate epidemiological data, population genetics, and Bayesian inference.
-Next, we propose future research directions, including the integration of external data sources to refine and evaluate forecasting models, the application of these models to other viral families, and the development of generative sequence models for evolutionary forecasting.
+I summarize how the work in this dissertation advances viral forecasting by developing models that integrate epidemiological data, population genetics, and Bayesian inference.
+Next, I propose future research directions, including the integration of external data sources to refine and evaluate forecasting models, the application of these models to other viral families, and the development of generative sequence models for evolutionary forecasting.
 This concludes the dissertation by offering a vision for the future of evolutionary forecasting of viruses.
