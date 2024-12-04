@@ -326,7 +326,7 @@ If there is no parent present, we simply estimate the variant's relative fitness
 We can extend the previous model for the Multinomial Logistic growth to take into account for evolutionary relationships using the variant-parent lineage mapping generated in the previous section.
 
 This updated model is instead parameterized by the relative fitness difference between variant $v$ and its parent lineages $\psi_{v} = \lambda_{v} - \lambda_{\text{parent}_{v}}$ directly.
-Under this parameterization, we can also define the (approximate) growth advantage innovations $\Psi_{v}$ from a variant lineage $v$ to its parent as:
+Under this parameterization, we can also define the (approximate) growth advantage innovations $\Psi_{v}$ from a variant lineage $v$ to its parent as
 \begin{align*}
 \Psi_{v} = \frac{\Delta_{v}}{\Delta_{\text{parent}_{v}}} = \exp(\psi_{v} \tau).
 \end{align*}
@@ -334,11 +334,10 @@ Under this parameterization, we can also define the (approximate) growth advanta
 \paragraph{Normal prior model}%
 
 We consider several prior models on the relative fitness innovation $\psi_{v}$.
-The most basic of this model is a normal prior:
+The most basic of these models is a normal prior on the relative fitness innovations
 \begin{align*}
     \psi_{v} = (\lambda_{v} - \lambda_{\text{parent}_{v}}) \sim \text{Normal}(0, \sigma).
 \end{align*}
-
 This induces a log normal prior on the growth advantage innovations $\Psi_{v}$.
 
 \paragraph{Regression prior for growth advantage innovations}%
