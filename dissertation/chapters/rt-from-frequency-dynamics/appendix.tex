@@ -68,28 +68,28 @@ R_{t} = \frac{1}{\int_{0}^{\infty} \exp(-r\tau)g(\tau)d\tau} = \frac{1}{M_{g}(-r
 according to the Lotka-Euler equation \cite{Wallinga2006} where $r$ is the epidemic growth rate and $M_{g}$ is the moment-generating function of the generation time $g$.
 
 This allows us to write the relative reproduction number of two variants $v$ and $u$ as a function of their epidemic growth rates, so that
-\begin{align*}
+\begin{align}
 \frac{R_{t,v}}{R_{t,u}} = \frac{M_{g}(-r_{u})}{M_{g}(-r_{v})}.
-\end{align*}
+\end{align}
 
 We'll consider three common generation time assumptions. First, we consider the case where the generation time is a point mass at $T_{g}$. In which case, $M_{g}(-r) = \exp(-r T_{g})$ and we recover the relationship
-\begin{align*}
+\begin{align}
 R_{t,v} = \exp(r_{v}T_{g}).
-\end{align*}
+\end{align}
 
 In this case, the relative effective reproduction number will depend on only the difference between the epidemic growth rates and therefore, is commonly used when converting estimated growth advantages to relative reproduction numbers in the case of logistic growth models.
 
 Second, we consider the case where the generation time is an exponential distribution with mean $T_{g}$. This assumption is often implicit and common in models of infectious diseases such as ODEs and their stochastic variants. Using the corresponding moment-generating function, we see that
-\begin{align*}
+\begin{align}
 R_{t,v} = 1 + r_{v} T_{g}
-\end{align*}
+\end{align}
 
 Next, we consider the Gamma distributed generation times with mean $T_{g}$ and standard deviation $s$.
 This is often used in models of infectious diseases via the chain trick in which multiple compartments are chained together to obtain non-exponential generation times or infectious periods.
 Re-parameterizing the Gamma distribution in terms of its mean and standard deviation and using its moment generating function, we have that
-\begin{align*}
+\begin{align}
 R_{t,v} = \left(1 + r_{v}  \left(\frac{s^{2}}{T_{g}}\right) \right)^{T_{g}^{2} / s^{2}}.
-\end{align*}
+\end{align}
 
 From this equation, we can see that increases in the mean of the generation time of $v$ leads to decreasing estimates of $R_{t,v}$ during epidemic decline ($r_{v} < 0$) and increased estimates during epidemic growth ($r_{v} > 0$) assuming $r_{v}$ and $s$ are fixed.
 Additionally, increases in the standard deviation will generally lead to lower inferred variant advantages.
@@ -98,16 +98,16 @@ This effect is also visualized in Figure \ref{fig:generation_time_sensitivity}.
 \paragraph{Variant growth-advantages are sensitive to generation time}%
 
 In the case where we have two variants $u, v$ with Gamma-distributed generation times with means $T_{u}, T_{v}$ and standard deviations $s_{u}, s_{v}$ respectively, we can then write the relative effective reproduction number of $v$ over $u$ as
-\begin{align*}
+\begin{align}
 \frac{R_{t,v}}{R_{t,u}} = \frac{\left[1 + r_{v}  \left(\frac{s_{v}^{2}}{T_{v}}\right)\right]^{T_{v}^{2} / s_{v}^{2}}}{\left[1 + r_{u} \left(\frac{s_{u}^{2}}{T_{u}}\right)\right]^{T_{u}^{2} / s_{u}^{2}}}.
-\end{align*}
+\end{align}
 It follows that increases in the mean of the generation time of $v$ leads to decreasing inferred variant advantages during epidemic decline and increased advantages during epidemic growth when all quantities are fixed.
 On the other hand, increases in the standard deviation will generally lead to lower inferred variant advantages.
 
 Taking a logarithm, we can also evaluate the sensitivity of our inferred growth advantages from our fixed growth advantage model with respect to the generation time assuming it is Gamma distributed as
-\begin{align*}
+\begin{align}
  \delta_{v}  = \ln \left( \frac{R_{t,v}}{R_{t,0}} \right) = \left( \frac{T_{g}^{2}}{s^{2}} \right)  \ln \left( \frac{1 + r_{v}  \left(\frac{s^{2}}{T_{g}}\right)}{1 + r_{0} \left(\frac{s^{2}}{T_{g}}\right) } \right).
-\end{align*}
+\end{align}
 As the log of the relative effective reproduction number, the behavior here is analogous to that discussed above when the mean $T_{g}$ and standard deviation $s$ are changed.
 This effects of varying mean and standard deviation are illustrated in Figure \ref{fig:growth_advantage_sensitivity}.
 Although the effective reproduction number and the growth advantage appear to have strong dependence on generation time parameters, we find that the epidemic growth rate $r$ is more robust to changes in generation time (see Figure \ref{fig:little_r_sensitivity}).
@@ -121,9 +121,9 @@ We'll now consider the case where there is a true fixed-variant growth advantage
 Here subscripts denote the generation time used when computing $R_{t}$.
 
 Under the misspecified variant generation time $g_{M}$, we can then write the inferred growth advantage as
-\begin{align*}
+\begin{align}
   \delta_{M} &= \ln \left( \frac{R_{t,v}^{g_{M}}}{R_{t, wt}^{g_{T}}} \right) = \ln \left(\frac{R_{t,v}^{g_{M}}}{R_{t,v}^{g_{T}}}\right) + \delta.
-\end{align*}
+\end{align}
 
 In general, the term inside the log is non-constant meaning that fixed variant growth advantages under one generation time become non-constant under generation time specification.
 
