@@ -1,12 +1,12 @@
 \graphicspath{{./chapters/operationalizing-forecasts/}}
 \chapter{Operationalizing evolutionary forecasts: \evofr\ and \forecastsNcov}
 
-In this chapter, we develop and discuss two software tools \evofr\ and \forecastsNcov\ which simplify the development, application, and communication of variant fitness dynamics and evolutionary forecasts.
+In this chapter, we develop and discuss two software tools \evofr\ and \forecastsNcov\ that simplify the development, application, and communication of variant fitness dynamics and evolutionary forecasts.
 
 \section{Introduction}
 
-The dissertation emphasizes integrating theoretical and practical approaches, blending mechanistic insights with statistical models.
-While earlier chapters focused on developing, evaluating, and applying specific models, these methods used in specific analyses motivated by existing scientific problems.
+This dissertation emphasizes integrating theoretical and practical approaches and blending mechanistic insights with statistical models.
+While earlier chapters focused on developing, evaluating, and applying specific models, these methods were used in specific analyses motivated by existing scientific problems.
 However, there is a common structure in the methods described that enables us to simplify the workflow of using these kinds of models.
 In this way, we move from scientific analyses to reproducible, scalable, and applied analyses that can tackle broad questions in evolutionary forecasting. % TODO: Addressing real-time analysis
 Having infrastructure for building, applying, and interpreting models allows us to iterate on our analyses, speeding up our responses and addressing real-world challenges.
@@ -20,7 +20,7 @@ This package serves as the computational backbone for the analyses presented in 
 
 \forecastsNcov\ incorporates \evofr\ into an automated workflow and public-facing platform, translating research and applied forecasts into actionable insights for public consumption.
 It continually retrieves publicly available sequence data to generate and visualize forecasts of SARS-CoV-2 variant frequencies for public consumption, providing forward-looking approach to the evolution of SARS-CoV-2 as a companion to Nextstrain. \cite{Hadfield2018}
-In this way, \forecastsNcov\ serves as first step to operationalized evolutionary forecasting in practice and at scale.
+In this way, \forecastsNcov\ serves as a first step to operationalized evolutionary forecasting in practice and at scale.
 
 Together, these software tools provide a basis for evolutionary forecasts as a dynamic process and concrete problem, setting the stage for continued development of this practice and scientifically-informed forecasts of pathogen evolution.
 
@@ -64,7 +64,7 @@ This section will describe the software's architecture and key features, highlig
 Each module performs specific tasks and is designed to be interoperable.
 As an example, this enables easily swapping between different models such as standard MLR, a Gaussian process-based model on the same pre-processed data.
 These models can then be fit with any of the inference methods in \texttt{evofr.infer} such as Markov Chain Monte Carlo (MCMC), Stochastic Variational Inference (SVI), and maximum a posteriori (MAP) estimation.
-The results of these models are stored in a standardized \texttt{evofr.posterior} object which is compatible with the various plotting methods stored in \texttt{evofr.plotting}.
+The results of these models are stored in a standardized \texttt{evofr.posterior} object, which is compatible with the various plotting methods stored in \texttt{evofr.plotting}.
 
 \paragraph{Reproducibility}
 
@@ -128,7 +128,7 @@ In the future, we hope to expand the capabilities of \evofr\ and address the afo
 Further development should continue to design and implement hybrid models which combine mechanistic insight and statistical flexibility, expanding the range of questions and forms of data that \evofr\ can address and handle.
 This includes additional likelihood functions and priors for extending existing models as well.
 
-There is also a great need to eager and support contributions to \evofr\ from the open-source community.
+There is also a need to support contributions to \evofr\ from the open-source community.
 This includes adding more thorough documentation of the package as well as the development of extended guide for contributors that is accessible to users.
 Going forward, the goal should be expanding the package to meet the needs of the communities who would most benefit from it: researchers and scientists in epidemiology, evolutionary biology, and public health.
 
