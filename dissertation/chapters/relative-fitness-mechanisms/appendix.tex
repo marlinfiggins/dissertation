@@ -53,7 +53,7 @@ This enables us to isolate the effects of transmissibility within different immu
 We begin with the 2-variant SIR model described in Supplementary Text \ref{ssec:frequency_dynamics}.
 We simulate this model for 100 days with generation time $\tau = 1 / \gamma = 3.0$ days, $R_{0, \wt} = 1.4$, $I_{\wt}(0) = 100$ individuals, $I_v(0) = 1$ individual, a 50\% transmissibility increase $\varTransmission=0.5$, and no immune escape $\varEscape=0.0$.
 We divide the period into early and late epidemic with the breakpoint being $t=50$.
-In Fig.~\ref{fig:mechanism_identification}D-E, we estimate the log growth advantage for the variant in the early and full periods using a logit-linear model:
+In Fig.~\ref{fig:mechanism_identification}D-E, we estimate the log growth advantage for the variant in the early and full periods using a logit-linear model
 
 \begin{equation}
 \log \left( \frac{f_v(t)}{1 - f_v(t)} \right) = \beta t / \tau + \alpha,
@@ -120,13 +120,13 @@ Source code used to generate figures, model implementations, and sequence count 
 \subsection{Exponentially growing populations to frequency dynamics}\label{ssec:frequency_dynamics}
 
 We consider a viral population consisting of $V$ exponentially-growing variant viruses each with prevalence $I_{v}$.
-Defining the time-varying growth rate for the prevalence of variant $v$ as $r_{v}(t)$, we can represent the prevalence using the following ordinary differential equation:
+Defining the time-varying growth rate for the prevalence of variant $v$ as $r_{v}(t)$, we can model the prevalence using an ordinary differential equation
 
 \begin{equation} \label{eq:inhomo_exp_growth}
     \frac{d I_{v}}{d t} = r_{v}(t) I_{v}(t), \quad v = 1,2, \ldots, V.
 \end{equation}
 
-The above differential equation has a known solution in terms of the integral of the time-varying growth rate and initial prevalence as follows:
+The above differential equation has a known solution in terms of the integral of the time-varying growth rate and initial prevalence,
 
 \begin{align}
 I_{v}(t) = I_{v}(0) \exp\left( \int_{0}^{t} r_{v}(s) ds\right),
@@ -134,13 +134,13 @@ I_{v}(t) = I_{v}(0) \exp\left( \int_{0}^{t} r_{v}(s) ds\right),
 where $I_{v}(0)$ is the initial prevalence of variant $v$.
 
 Now turning to the frequency dynamics of the population, we write the frequency of variant $v$ in the population as  $f_{v}(t) = I_{v}(t) / \sum_{u=1}^{V} I_{u}(t)$.
-This allows us to derive an ODE for variant frequency in terms of the variant growth rates using the quotient rule for differentiation:
+This allows us to derive an ODE for variant frequency in terms of the variant growth rates using the quotient rule for differentiation
 \begin{align}
     \frac{d f_{v}}{d t} &= f_{v} \left( \sum_{u=1}^{V} [r_{v}(t) - r_{u}(t)] f_{u} \right)\\
                         &= f_{v} \left( r_{v}(t) - \sum_{u=1}^{V} r_{u}(t) f_{u} \right).
 \end{align}
 
-This system of differential equations resembles a logistic growth equation and can be shown to have the following solution in terms of the initial frequencies $f_{v}(0)$ and the variant growth rates:
+This system of differential equations resembles a logistic growth equation and can be shown to have the following solution in terms of the initial frequencies $f_{v}(0)$ and the variant growth rates
 \begin{align}
     f_{v}(t) &= \frac{ f_{v}(0) \exp( \int_{0}^{t} r_{v}(s) ds)}{\sum_{u=1}^{V}  f_{u}(0) \exp( \int_{0}^{t} r_{u}(s) ds)}.
 \end{align}
@@ -150,8 +150,8 @@ We see that by tracking the rate at which variant viruses are spreading, we can 
 
 \paragraph{Relative frequency and relative fitness}%
 
-Using the above equation for the variant frequencies, we can write the relative frequency of variant $v$ over $u$ as $x_{v,u}(t) = f_{v}(t) / f_{u}(t)$ to see:
-\begin{align*}
+Using the above equation for the variant frequencies, we can write the relative frequency of variant $v$ over $u$ as $x_{v,u}(t) = f_{v}(t) / f_{u}(t)$ to see
+\begin{align}
     x_{v, u}(t) = \frac{f_{v}(t)}{f_{u}(t)} &= \frac{f_{v}(0)}{f_{u}(0)} \exp \left( \int_{0}^{t} [r_{v}(s) - r_{u}(s)] ds \right)\\
                                             &=x_{v,u}(0)\exp \left( \int_{0}^{t} \lambda_{v,u}(s) ds \right).
 \end{align}
@@ -160,7 +160,7 @@ Notice this relative frequency change depends on the initial relative frequencie
 This relative fitness has the same units as the exponential growth rate (e.g. per day).
 Using the definition of relative fitness, we can notice that
 \begin{align}
-\lambda_{v, u}(t) = r_{v}(t) - r_{u}(t) = \frac{d }{d t} \left[\log \left( x_{v,u}(t) \right) \right] = - \lambda_{u,v}(t)
+\lambda_{v, u}(t) = r_{v}(t) - r_{u}(t) = \frac{d }{d t} \left[\log \left( x_{v,u}(t) \right) \right] = - \lambda_{u,v}(t).
 \end{align}
 
 We can see that there is a symmetry in the relative fitnesses and that the associated frequency dynamics depend on the differences between relative fitnesses.
@@ -183,13 +183,15 @@ In fact, applying these ideas to compartmental models enables to see how mechani
 \paragraph{Two-strain SIR}%
 
 For simplicity, we will begin by analyzing a two-strain SIR model in which a variant virus $v$ can differ from wildtype virus wt by increased intrinsic transmissibility (via $\varEscape_{T}$) and immune escape against wild-type immunity (via $\varEscape_{E}$).
-This system of 5 ordinary differential equations follows
+This gives a system of 5 ordinary differential equations
 
-    \frac{d S}{d t} &= - \beta S I_{\wt} - \beta \varTransmission S I_{v}\\
-    \frac{d I_{\wt}}{dt} &= \beta S I_{\wt} - \gamma I_{\wt}\\
-    \frac{d I_{v}}{dt} &= \beta (1+\varTransmission) S I_{v} + \beta (1+\varTransmission) \varEscape \phi_{\wt} I_{v} - \gamma I_{v}\\
-    \frac{d \phi_{\wt}}{dt} &= \gamma I_{\wt} - \beta (1+\varTransmission) \varEscape \phi_{\wt} I_{v}\\
-    \frac{d \phi_{v}}{dt} &= \gamma I_{v}.
+\begin{align}
+    \frac{d S}{d t} &= - \beta S I_{\wt} - \beta \varTransmission S I_{v},\\
+    \frac{d I_{\wt}}{dt} &= \beta S I_{\wt} - \gamma I_{\wt},\\
+    \frac{d I_{v}}{dt} &= \beta (1+\varTransmission) S I_{v} + \beta (1+\varTransmission) \varEscape \phi_{\wt} I_{v} - \gamma I_{v},\\
+    \frac{d \phi_{\wt}}{dt} &= \gamma I_{\wt} - \beta (1+\varTransmission) \varEscape \phi_{\wt} I_{v},\\
+    \frac{d \phi_{v}}{dt} &= \gamma I_{v},
+\end{align}
 where $I_{\wt}$ denotes wild-type prevalence, $I_{v}$ denotes variant prevalence and $\phi_{\wt}$ denotes immunity derived from wild-type infection.
 In this model, the variant virus can infect both susceptible individuals $S$ and individuals with immunity to wild-type virus $\phi_{\wt}$.
 Increased intrinsic transmissibility increases the baseline transmission rate from $\beta$ in wild-type to $\beta \varTransmission$ in the variant virus and immune escape increases the transmission rate against those with wildtype immunity, so that the at-risk population is $\varEscape \phi_{\wt}$.
@@ -203,7 +205,7 @@ From this representation of relative fitness, we can see that given fixed increa
 
 \paragraph{$n$-strain SIR}%
 
-This model can also be extended to an $n$-strain SIR model where each variant strain $v_i$ with $2\leq i \leq n$ is described by its own advantage parameters $\theta_{i} = (\varTransmission^{(i)}, \varEscape ^{(i)})$  relative to the wildtype ($\theta_{\wt} = \theta_{1} = (0, 0)$).
+This model can also be extended to an $n$-strain SIR model where each variant strain $v_i$ with $2\leq i \leq n$ is described by its own advantage parameters $\theta_{i} = (\varTransmission^{(i)}, \varEscape ^{(i)})$  relative to the wildtype ($\theta_{\wt} = \theta_{1} = (0, 0)$)
 
 \begin{align}
     \frac{d S}{d t} &= - \beta S I_{\wt} - \beta (1+\varTransmission) S I_{v_{i}}\\
@@ -297,11 +299,11 @@ To compute the strain growth rate, we can sum over all possible immune histories
                         &= - \gamma_{i} I_{i} + \sum_{J \in P(M), i \notin J} \beta_{i, J} R_{J} \sum_{K \in P(M), i\notin K} R_{K}I_{i}\\
                         &= - \gamma_{i} I_{i} + \sum_{J \in P(M), i \notin J} \beta_{i, J} R_{J} I_{i}\\
                         &= \left(-\gamma_{i} + \sum_{J \in P(M), i \notin J} \beta_{i,J} R_{J} \right) I_{i}\\
-                        &= \left(-\gamma + \beta\sum_{J \in P(M), i \notin J} \varEscape_{i,J} R_{J} \right) I_{i}\\
+                        &= \left(-\gamma + \beta\sum_{J \in P(M), i \notin J} \varEscape_{i,J} R_{J} \right) I_{i}.\\
 \end{align}
 
 Assuming that the transmission rate can be decomposed as a base transmission rate $\beta$ and a strain $i$ and immune history $J$ specific escape rate $\varEscape_{i, J}$ and that the recovery rate is constant, we notice this is identical to our previous immune background model.
-Therefore, our relative fitnesses can be written as
+Therefore, our relative fitnesses simplify to
 
 \begin{align}
     \lambda_{i, j} = \beta \sum_{B \in P(M)} (\varEscape_{i, B} - \varEscape_{j, B}) R_{B},
@@ -312,7 +314,7 @@ where for simplicity we define $\varEscape_{v, B} = 0$ if $v \in B$.
 
 In this section, we derive our selective pressure metric $\psi(t)$ and show how it contributes to the overall epidemic growth rate in the population.
 
-Beginning again from our assumption of inhomogeneous exponential growth, we can write a differential equation for the total prevalence $I(t)= \sum_{v} I_{v}(t)$ as follows:
+Beginning again from our assumption of inhomogeneous exponential growth, we can write a differential equation for the total prevalence $I(t)= \sum_{v} I_{v}(t)$,
 
 \begin{align}
     \frac{d I}{d t} &= \sum_{v} \frac{d I_{v}}{d t} =  \sum_{v} r_{v}(t) I_{v}(t)\\
@@ -322,7 +324,7 @@ where we've used that $I_{v}(t) = f_{v}(t) I(t)$.
 This allows us to see that $\overline{r}(t) = \sum_{v} r_{v}(t) f_{v}(t)$ is the average growth rate of the prevalence.
 Re-writing the average in terms of some base exponential growth rate and the relative fitnesses so that $r_{v}(t) = \lambda_{v}(t) + r_\wt(t)$, we get that $\overline{r}(t) = \sum_{v} \lambda_{v}(t)f_{v}(t) + r_\wt(t)$.
 We can simplify this by writing $\overline{r}(t) = \overline{\lambda}(t) + r_\wt(t)$ where $\overline{\lambda}(t) = \sum_{v} \lambda_{v}(t)f_{v}(t)$ is the mean fitness of the population.
-We can now look at the rate of change in the average growth rate by taking its derivative.
+We can now look at the rate of change in the average growth rate by taking its derivative
 
 \begin{align}
     \frac{d \overline{r}}{d t} &= \frac{d r_{\wt}}{d t} + \frac{d \overline{\lambda}}{d t} \\
@@ -335,19 +337,19 @@ We can now look at the rate of change in the average growth rate by taking its d
 
 Here, we've written the last line in terms of expectations relative to sampling according to the frequency distribution.
 This shows us that the change in the average growth rate of the epidemic can be written in terms of the growth rate of the pivot category, the mean rate of change in the relative fitness, and the variance of the relative fitnesses.
-We will call terms which can be computed in terms of quantities derived from frequencies alone the selective pressure and denote it as
+We will call terms which can be computed in terms of quantities derived from frequencies alone the selective pressure
 
 \begin{equation}
 \psi(t) =  \Expect_{f(t)}\left[ \frac{d \lambda_v}{d t}\right] +  \Var_{f(t)}[\lambda_{v}].
 \end{equation}
 
 We can use this idea to directly write the prevalence in terms of the selective pressure and the base growth rate.
-First, we define a cumulative selective pressure as
+First, we define a cumulative selective pressure
 \begin{align}
 \Psi(t) = \int_{0}^{t} \psi(s) ds.
 \end{align}
 
-We can then use this to reconstruct the relative incidence as:
+We can then use this to reconstruct the relative incidence
 
 \begin{align}
     \frac{I(t)}{I(0)} &= \exp\left(\int_{0}^{t} \overline{r}(s) ds\right)\\
