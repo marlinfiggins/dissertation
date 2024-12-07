@@ -13,7 +13,7 @@ JOURNAL_MAPPING = {
     "China CDC Weekly": "China CDC Wkly.",
     "Distill": "Distill",
     "Emerging Infectious Diseases": "Emerg. Infect. Dis.",
-    "Eurosurveillance": "Euro Surveill",
+    "Eurosurveillance": "Eurosurveillance",
     "Evolution": "Evolution",
     "Expert Review of Anti-Infective Therapy": "Expert Rev. Anti Infect. Ther.",
     "Infectious Diseases of Poverty": "Infect. Dis. Poverty",
@@ -36,6 +36,7 @@ JOURNAL_MAPPING = {
     "Proceedings of the Royal Society A": "Proc. R. Soc. A",
     "Proceedings of the Royal Society B": "Proc. R. Soc. B",
     "SIAM Review": "SIAM Rev.",
+    "SIAM Journal on Applied Mathematics": "SIAM J. Appl. Math.",
     "Science": "Science",
     "Science Translational Medicine": "Sci. Transl. Med.",
     "Scientific Data": "Sci. Data",
@@ -114,6 +115,9 @@ def capitalize_proper_nouns(title):
         "Delta",
         "COVID",
         "IgG",
+        "Netherlands",
+        "Europe",
+        "South Korea",
     ]  # Extend as needed
 
     for noun in proper_nouns:
@@ -132,7 +136,16 @@ def process_entry(entry_lines, citation_key, author_cutoff=6):
     fields = "".join(entry_lines)
     updated_lines = []
     missing_fields = []
-    primary_fields = {"author", "title", "journal", "year", "volume", "pages"}
+    primary_fields = {
+        "author",
+        "title",
+        "journal",
+        "year",
+        "volume",
+        "number",
+        "pages",
+        "publisher",
+    }
 
     # Check for missing fields once
     if "year =" not in fields:
@@ -193,7 +206,7 @@ def process_entry(entry_lines, citation_key, author_cutoff=6):
                 if len(authors_list) > author_cutoff:
                     # Trim authors and add et al.
                     trimmed_authors = (
-                        " and ".join(authors_list[:author_cutoff]) + ", et al."
+                        " and ".join(authors_list[:author_cutoff]) + " and others"
                     )
                     # Rebuild the author field
                     line = re.sub(
