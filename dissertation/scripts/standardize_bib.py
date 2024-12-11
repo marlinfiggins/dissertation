@@ -142,7 +142,6 @@ def process_entry(entry_lines, citation_key, author_cutoff=6):
         "journal",
         "year",
         "volume",
-        "number",
         "pages",
         "publisher",
     }
