@@ -127,10 +127,10 @@ Later, we apply this model to empirical SARS-CoV-2 sequence data from 50 US stat
 To understand the fitness trade-off between transmissibility and immune escape, we consider dynamics with a wildtype virus $\wt$ with $\varTransmission_\wt = 0$ and $\varEscape_\wt = 0$, an increased transmissibility variant $\varT$ with $\varTransmission_\varT > 0$ and $\varEscape_\varT = 0$ and an immune escape variant $\varE$ with $\varTransmission_\varE = 0$ and $\varEscape_\varE > 0$.
 
 Following Equation \ref{eq:two_strain_relative_fitness}, we write relative fitnesses of the escape variant or transmissibility variant as
-\begin{align*}
+\begin{align}
     \lambda_{\varE, \wt} &= \varEscape \beta \phi_{\wt}(t)\\
     \lambda_{\varT, \wt} &= \varTransmission \beta S(t).
-\end{align*}
+\end{align}
 
 In the simplest case where individuals are either susceptible or have wildtype immunity ($S(t) + \phi_{\wt}(t) = 1$), we can compute the critical immune fraction $\phi^{*}$ at which $\lambda_{\varE, \wt}(\phi^{*}) = \lambda_{\varT, \wt}(\phi^{*})$ as
 \begin{equation} \label{eq:critical_immunity}
@@ -161,18 +161,18 @@ The first step to addressing this is to understand how the relative fitness may 
 
 We find that the mechanistic forms analyzed in this paper (Supplementary Text \ref{ssec:frequency_dynamics}) can be represented as weighted combinations of $B$ time-varying functions $\Upsilon_{b}(t)$ with weights $\beta_{b}$.
 We can think of each of these functions $\Upsilon_b$ as an immune background and the coefficient $\beta_{b}$ as a transmission differential, so that
-\begin{align*}
+\begin{align}
 \lambda_{v,u}(t) = \sum_{1 \leq b \leq B} \beta_{b} \Upsilon_{b}(t).
-\end{align*}
+\end{align}
 
 Even in the case of complete knowledge of the relative fitness and the underlying fitness contributions in the present and past, we have that change in the relative fitness is determined by
-\begin{align*}
+\begin{align}
     \frac{d\lambda_{v,u}}{dt} = \sum_{1 \leq b \leq B} \beta_{b} \frac{d\Upsilon_{b}}{dt}(t).
-\end{align*}
-By considering a Taylor expansion of the relative fitness about the point of estimation $t_{0}$, we can approximate the relative fitness in the future as:
-\begin{align*}
+\end{align}
+By considering a Taylor expansion of the relative fitness about the point of estimation $t_{0}$, we can approximate the relative fitness in the future as
+\begin{align}
     \lambda_{v,u}(t) \approx \lambda_{v,u}(t_{0}) + (t - t_0)\sum_{1\leq b \leq B} \beta_b \frac{d\Upsilon_b}{dt}(t_0).
-\end{align*}
+\end{align}
 This suggests small differences in the form of $\lambda_{v,u}(t)$ can lead to meaningful differences in the future relative fitnesses through changes in the underlying immune backgrounds.
 
 We investigate whether relative fitnesses vary predictably in the short-term regardless of mechanism.
@@ -247,8 +247,8 @@ This is similar to ideas quantifying rates of adaptation via fitness flux \cite{
 
 In this case, the overall growth rate $\bar{r}$ and relative incidence $I(t) / I(0)$ can be written directly
 \begin{align}
-    \bar{r}(t) &= \bar{r}(0) + [r_{\wt}(t) - r_{\wt}(0)] + \Psi(t)\\
-    \frac{I(t)}{I(0)} &= \exp \left( \int_0^t [r_{\wt}(s) + \Psi(s)]ds \right).
+    \bar{r}(t) &= \bar{r}(0) + [r_{\wt}(t) - r_{\wt}(0)] + \Psi(t),\\
+    \frac{I(t)}{I(0)} &= \exp \left( \int_0^t [r_{\wt}(s) + \Psi(s)]ds \right),
 \end{align}
 using the cumulative selective pressure $\Psi(t) = \int_0^t \psi(s)ds$.
 In addition to estimating the relative fitness, metrics derived from these models can inform us of much more.
