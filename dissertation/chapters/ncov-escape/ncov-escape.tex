@@ -106,10 +106,10 @@ This naive approach often fails to account for the nested structure and shared e
 Simulating phylogenetic trees under selection, we show that fitness increases over time as more fit lineages reproduce in the population (Fig.~\ref{fig:shared_history_spurious_correlation}A).
 Though we simulate this tree assuming selection is independent of individual mutations or their number, we find that the total number of mutations explains much of the variance in relative fitness ($R^2=0.76$), as shown in Fig.~\ref{fig:shared_history_spurious_correlation}B.
 This spurious correlation is due to shared evolutionary history creating correlations between individual lineages in the population despite branch level innovations being independent.
-In fact, we can see that the magnitude of the $R^2$ increases with the variation in fitness between branches i.e. the strength of selection in the population (Fig.~\ref{fig:fitness-variation-variance-explained}A).
+In fact, we can see that the magnitude of the $R^2$ increases with the variation in fitness between branches, i.e., the strength of selection in the population (Fig.~\ref{fig:fitness-variation-variance-explained}A).
 This suggests that stronger selection amplifies the confounding effect of shared ancestry.
 
-To address this challenge, we focus on fitness innovations i.e. branch-specific changes in relative fitness. 
+To address this challenge, we focus on fitness innovations, i.e., branch-specific changes in relative fitness.
 Using innovations or changes in fitness and mutations across branches within our regressions, we isolate the contributions of molecular phenotypes to fitness, effectively removing the confounding effects of shared ancestry (Fig.~\ref{fig:shared_history_spurious_correlation}C).
 This relationship between fitness innovations and mutation change is preserved across varying levels of selection strength (Fig.~\ref{fig:fitness-variation-variance-explained}B).
 
@@ -275,18 +275,18 @@ These contributions provide a foundation for advancing long-term evolutionary fo
 
 To investigate how evolutionary history influences correlations between molecular phenotypes and fitness, we simulated transmission trees using a discrete-generation model.
 Each tree begins with a single ancestral lineage at generation 0, initialized with fitness $\lambda_0$.
-At each generation $t$, the total number of offspring $O_{t}$ is sampled from a Poisson distribution with mean $bar{N}_t$.
-These offspring are then distributed among active lineages $i$ are allocated using a multinomial draw based on fitness-weighted probabilities, so that the offspring by lineage are given by:
+At each generation $t$, the total number of offspring $O_{t}$ is sampled from a Poisson distribution with mean $\overline{N}_t$.
+These offspring are then distributed among active lineages $i$ are allocated using a multinomial draw based on fitness-weighted probabilities, so that the offspring by lineage are given by
 
-\begin{align*}
+\begin{align}
     O_{i, t} &\sim \text{Multinomial}\left(O_t, p_{i}\right),\\
     p_i &= \frac{\exp(\lambda_i)}{\sum_j \exp(\lambda_j)},
-\end{align*}
+\end{align}
 where $\lambda_i$ is the fitness of lineage $i$.
 We assume that the fitness of each offspring evolves from its parent’s fitness according to a Brownian motion process
-\begin{equation*}
+\begin{equation}
     \lambda_{\text{offspring}} = \lambda_{\text{parent}} + \psi, \quad \psi \sim \text{Normal}(0, \sigma^2),
-\end{equation*}
+\end{equation}
 where $\sigma$ determines the variance in fitness evolution.
 Mutations accumulate along branches with their counts drawn from a Poisson distribution with rate $\mu$.
 
@@ -301,19 +301,19 @@ These sequences were counted according to their annotated Pango lineage \cite{ak
 \paragraph{Multinomial logistic growth}
 
 To estimate relative rates of growth between variants of interest, we fit a multinomial logistic growth model to the sequence count data.
-This model can be written as:
-\begin{align*}
+This model can be written as
+\begin{align}
     f_{t, v} = \frac{\exp(\alpha_{v} + \lambda_{v} t)}{\sum_{u=1}^{V} \exp(\alpha_{u} + \lambda_{u} t)},
-\end{align*}
+\end{align}
 where $\alpha_{V} = \lambda_{V} = 0$.
 
 We can then interpret $\lambda_{v}$ as the relative fitness of variant $v$ relative to variant $V$.
 Assuming a fixed generation time $\tau$ additionally allows us to then write the relative $R_{t}$ or growth advantage for variant $v$ over $V$ as $\Delta_{v} = \exp(\lambda_{v}\tau)$.
-To fit this model, we use a multinomial likelihood with probabilities defined by the frequencies above, the vector of counts for each variant at time $t$ $S_{t}$, and the total count of sequences at time $t$:
+To fit this model, we use a multinomial likelihood with probabilities defined by the frequencies above, the vector of counts for each variant at time $t$ $S_{t}$, and the total count of sequences at time $t$,
 
-\begin{align*}
+\begin{align}
     S_{t} \sim \text{Multinomial}(N_{t}, f_{t, \cdot}).
-\end{align*}
+\end{align}
 
 \paragraph{Mapping variant-parent relationships}%
 
@@ -387,7 +387,7 @@ This enables us to make predictors of the phenotype for out of sample lineages a
 
 \subsection*{Acknowledgements}
 
-We gratefully acknowledge all data contributors, i.e. the Authors and their Originating laboratories responsible for obtaining the specimens, and their Submitting laboratories for generating the genetic sequence and metadata and sharing via the GISAID Initiative, on which this research is based.
+We gratefully acknowledge all data contributors, i.e., the Authors and their Originating laboratories responsible for obtaining the specimens, and their Submitting laboratories for generating the genetic sequence and metadata and sharing via the GISAID Initiative, on which this research is based.
 
 \subsubsection*{Funding}
 
